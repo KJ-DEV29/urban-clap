@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Blood Bank Management System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="dashboard-stats">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-2">
+                            <i class="fas fa-user-circle me-2"></i>Welcome, {{ user.first_name }}!
+                        </h2>
+                        <p class="mb-0">Manage your blood donation activities and profile information.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a href="{% url 'auth:profile' %}" class="btn btn-light">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'core:donate_blood' %}" class="btn btn-primary w-100">
+                                <i class="fas fa-tint me-2"></i>Donate Blood
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'core:purchase_blood' %}" class="btn btn-success w-100">
+                                <i class="fas fa-shopping-cart me-2"></i>Purchase Blood
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'core:review' %}" class="btn btn-info w-100">
+                                <i class="fas fa-star me-2"></i>Write Review
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'core:contact' %}" class="btn btn-warning w-100">
+                                <i class="fas fa-phone me-2"></i>Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Information -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Profile Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" class="rounded-circle" width="100" height="100" alt="Profile Picture">
+                        {% else %}
+                            <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                                <i class="fas fa-user fa-3x text-white"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <ul class="list-unstyled">
+                        <li><strong>Name:</strong> {{ profile.full_name }}</li>
+                        <li><strong>Email:</strong> {{ user.email }}</li>
+                        <li><strong>Phone:</strong> {{ profile.phone|default:"Not provided" }}</li>
+                        <li><strong>City:</strong> {{ profile.city|default:"Not provided" }}</li>
+                        <li><strong>Donor Status:</strong> 
+                            {% if profile.is_donor %}
+                                <span class="badge bg-success">Registered Donor</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Not a Donor</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Donations -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tint me-2"></i>Recent Donations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user_donations %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Blood Bank</th>
+                                        <th>Status</th>
+                                        <th>Units</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donation in user_donations %}
+                                    <tr>
+                                        <td>{{ donation.donation_date|date:"M d, Y" }}</td>
+                                        <td>{{ donation.blood_bank.name }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if donation.status == 'completed' %}success{% elif donation.status == 'scheduled' %}primary{% else %}warning{% endif %}">
+                                                {{ donation.status|title }}
+                                            </span>
+                                        </td>
+                                        <td>{{ donation.units_collected }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center">No donation history available.</p>
+                        {% if not profile.is_donor %}
+                            <div class="text-center">
+                                <a href="{% url 'donors:donor_register' %}" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Register as Donor
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row">
+        <!-- Blood Purchases -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shopping-cart me-2"></i>Recent Blood Purchases
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user_purchases %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Blood Type</th>
+                                        <th>Units</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for purchase in user_purchases %}
+                                    <tr>
+                                        <td>{{ purchase.created_at|date:"M d, Y" }}</td>
+                                        <td>{{ purchase.blood_type }}</td>
+                                        <td>{{ purchase.units_needed }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if purchase.status == 'completed' %}success{% elif purchase.status == 'approved' %}primary{% elif purchase.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                                {{ purchase.status|title }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center">No blood purchase history available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>Your Reviews
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if user_reviews %}
+                        {% for review in user_reviews %}
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">{{ review.title }}</h6>
+                                <div>
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="fas fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="far fa-star text-warning"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="mb-1">{{ review.comment|truncatewords:15 }}</p>
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                            {% if not review.is_approved %}
+                                <span class="badge bg-warning ms-2">Pending Approval</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center">No reviews submitted yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blood Inventory Summary -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Current Blood Inventory
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <div class="blood-type-card text-center">
+                                        <h5 class="text-danger">A+</h5>
+                                        <span class="badge bg-primary">Available</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="blood-type-card text-center">
+                                        <h5 class="text-danger">B+</h5>
+                                        <span class="badge bg-primary">Available</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="blood-type-card text-center">
+                                        <h5 class="text-danger">O+</h5>
+                                        <span class="badge bg-primary">Available</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="blood-type-card text-center">
+                                        <h5 class="text-danger">AB+</h5>
+                                        <span class="badge bg-warning">Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6>Need Blood?</h6>
+                                <p class="text-muted">Check our current inventory and place a request.</p>
+                                <a href="{% url 'core:purchase_blood' %}" class="btn btn-danger">
+                                    <i class="fas fa-ambulance me-2"></i>Request Blood
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
