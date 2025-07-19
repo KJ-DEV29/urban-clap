@@ -1,348 +1,313 @@
 // Main JavaScript for Blood Bank Management System
 
+// Hamburger Menu Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    const navMenuIcon = document.getElementById('nav-menu-icon');
+    const navContentFullPage = document.getElementById('nav-content-full-page');
 
-    // Initialize popovers
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl);
-    });
+    if (navMenuIcon && navContentFullPage) {
+        navMenuIcon.addEventListener('click', function() {
+            navMenuIcon.classList.toggle('active');
+            navContentFullPage.classList.toggle('active');
+        });
 
-    // Form validation
-    const forms = document.querySelectorAll('.needs-validation');
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-menu-items a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenuIcon.classList.remove('active');
+                navContentFullPage.classList.remove('active');
+            });
+        });
 
-    // Blood type selection
-    const bloodTypeSelects = document.querySelectorAll('.blood-type-select');
-    bloodTypeSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            const selectedType = this.value;
-            const bloodTypeInfo = document.getElementById('blood-type-info');
-            if (bloodTypeInfo) {
-                updateBloodTypeInfo(selectedType);
+        // Close menu when clicking on the full page overlay
+        navContentFullPage.addEventListener('click', function(event) {
+            if (event.target === navContentFullPage) {
+                navMenuIcon.classList.remove('active');
+                navContentFullPage.classList.remove('active');
             }
         });
+    }
+});
+
+// Form Validation
+function validateForm(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return true;
+
+    let isValid = true;
+    const requiredFields = form.querySelectorAll('[required]');
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            showFieldError(field, 'This field is required');
+            isValid = false;
+        } else {
+            clearFieldError(field);
+        }
     });
 
-    // Dynamic form fields
-    const urgencySelect = document.querySelector('#urgency_level');
-    if (urgencySelect) {
-        urgencySelect.addEventListener('change', function() {
-            updatePriceCalculation();
-        });
-    }
+    // Email validation
+    const emailFields = form.querySelectorAll('input[type="email"]');
+    emailFields.forEach(field => {
+        if (field.value && !isValidEmail(field.value)) {
+            showFieldError(field, 'Please enter a valid email address');
+            isValid = false;
+        }
+    });
 
-    const unitsInput = document.querySelector('#units_needed');
-    if (unitsInput) {
-        unitsInput.addEventListener('input', function() {
-            updatePriceCalculation();
-        });
-    }
+    // Password validation
+    const passwordFields = form.querySelectorAll('input[type="password"]');
+    passwordFields.forEach(field => {
+        if (field.value && field.value.length < 8) {
+            showFieldError(field, 'Password must be at least 8 characters long');
+            isValid = false;
+        }
+    });
 
-    // Auto-hide alerts after 5 seconds
+    return isValid;
+}
+
+function showFieldError(field, message) {
+    clearFieldError(field);
+    field.classList.add('error');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#dc3545';
+    errorDiv.style.fontSize = '0.875rem';
+    errorDiv.style.marginTop = '0.25rem';
+    field.parentNode.appendChild(errorDiv);
+}
+
+function clearFieldError(field) {
+    field.classList.remove('error');
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Auto-hide alerts after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
         setTimeout(() => {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
+            alert.style.opacity = '0';
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
         }, 5000);
     });
+});
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Blood type selection functionality
+function selectBloodType(type) {
+    const bloodTypeInput = document.getElementById('blood_type');
+    if (bloodTypeInput) {
+        bloodTypeInput.value = type;
+        
+        // Update visual selection
+        document.querySelectorAll('.blood-type-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        event.target.classList.add('selected');
+    }
+}
+
+// Date picker restrictions
+function setMinDate(inputId) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        const today = new Date().toISOString().split('T')[0];
+        input.setAttribute('min', today);
+    }
+}
+
+// Character counter for textareas
+function setupCharacterCounter(textareaId, counterId, maxLength) {
+    const textarea = document.getElementById(textareaId);
+    const counter = document.getElementById(counterId);
+    
+    if (textarea && counter) {
+        textarea.addEventListener('input', function() {
+            const remaining = maxLength - this.value.length;
+            counter.textContent = remaining;
+            
+            if (remaining < 0) {
+                counter.style.color = '#dc3545';
+            } else if (remaining < 50) {
+                counter.style.color = '#ffc107';
+            } else {
+                counter.style.color = '#6c757d';
             }
         });
-    });
+    }
+}
 
-    // Search functionality
-    const searchInput = document.querySelector('#search-input');
+// Search functionality
+function setupSearch(searchInputId, itemsSelector) {
+    const searchInput = document.getElementById(searchInputId);
+    const items = document.querySelectorAll(itemsSelector);
+    
     if (searchInput) {
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
-            const tableRows = document.querySelectorAll('tbody tr');
             
-            tableRows.forEach(row => {
-                const text = row.textContent.toLowerCase();
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
                 if (text.includes(searchTerm)) {
-                    row.style.display = '';
+                    item.style.display = '';
                 } else {
-                    row.style.display = 'none';
+                    item.style.display = 'none';
                 }
             });
         });
     }
+}
 
-    // Filter functionality
-    const filterSelects = document.querySelectorAll('.filter-select');
-    filterSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            applyFilters();
-        });
+// Sort functionality
+function sortTable(tableId, columnIndex) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+    rows.sort((a, b) => {
+        const aValue = a.cells[columnIndex].textContent.trim();
+        const bValue = b.cells[columnIndex].textContent.trim();
+        return aValue.localeCompare(bValue);
     });
+    
+    rows.forEach(row => tbody.appendChild(row));
+}
 
-    // Date picker enhancement
-    const dateInputs = document.querySelectorAll('input[type="date"]');
-    dateInputs.forEach(input => {
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        input.setAttribute('min', today);
-    });
-
-    // Phone number formatting
-    const phoneInputs = document.querySelectorAll('input[type="tel"]');
-    phoneInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            let value = this.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                value = '(' + value;
-                if (value.length > 4) {
-                    value = value.substring(0, 4) + ') ' + value.substring(4);
-                }
-                if (value.length > 9) {
-                    value = value.substring(0, 9) + '-' + value.substring(9);
-                }
-                if (value.length > 14) {
-                    value = value.substring(0, 14);
-                }
-            }
-            this.value = value;
-        });
-    });
-
-    // Password strength indicator
-    const passwordInput = document.querySelector('#id_password1');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-            checkPasswordStrength(this.value);
-        });
+// Loading spinner
+function showLoading(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = '<div class="spinner"></div>';
     }
+}
 
-    // File upload preview
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    fileInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                showFilePreview(file, this);
-            }
-        });
-    });
+function hideLoading(elementId, content) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = content;
+    }
+}
 
-    // Initialize charts if Chart.js is available
-    if (typeof Chart !== 'undefined') {
-        initializeCharts();
+// Modal functionality
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 });
 
-// Blood type information
-function updateBloodTypeInfo(bloodType) {
-    const bloodTypeInfo = document.getElementById('blood-type-info');
-    const info = {
-        'A+': 'Can donate to: A+, AB+ | Can receive from: A+, A-, O+, O-',
-        'A-': 'Can donate to: A+, A-, AB+, AB- | Can receive from: A-, O-',
-        'B+': 'Can donate to: B+, AB+ | Can receive from: B+, B-, O+, O-',
-        'B-': 'Can donate to: B+, B-, AB+, AB- | Can receive from: B-, O-',
-        'AB+': 'Can donate to: AB+ | Can receive from: All blood types',
-        'AB-': 'Can donate to: AB+, AB- | Can receive from: A-, B-, AB-, O-',
-        'O+': 'Can donate to: A+, B+, AB+, O+ | Can receive from: O+, O-',
-        'O-': 'Can donate to: All blood types | Can receive from: O-'
-    };
-    
-    if (bloodTypeInfo && info[bloodType]) {
-        bloodTypeInfo.textContent = info[bloodType];
-        bloodTypeInfo.style.display = 'block';
-    }
-}
-
-// Price calculation
-function updatePriceCalculation() {
-    const urgencySelect = document.querySelector('#urgency_level');
-    const unitsInput = document.querySelector('#units_needed');
-    const priceDisplay = document.querySelector('#price-display');
-    
-    if (urgencySelect && unitsInput && priceDisplay) {
-        const urgency = urgencySelect.value;
-        const units = parseInt(unitsInput.value) || 0;
-        
-        const basePrice = 100.00;
-        const urgencyMultiplier = {
-            'normal': 1.0,
-            'urgent': 1.5,
-            'emergency': 2.0
-        };
-        
-        const pricePerUnit = basePrice * urgencyMultiplier[urgency];
-        const totalPrice = units * pricePerUnit;
-        
-        priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
-    }
-}
-
-// Apply filters
-function applyFilters() {
-    const filterSelects = document.querySelectorAll('.filter-select');
-    const tableRows = document.querySelectorAll('tbody tr');
-    
-    tableRows.forEach(row => {
-        let showRow = true;
-        
-        filterSelects.forEach(select => {
-            const filterValue = select.value;
-            const filterColumn = select.getAttribute('data-filter');
-            
-            if (filterValue && filterValue !== 'all') {
-                const cellValue = row.querySelector(`[data-${filterColumn}]`).getAttribute(`data-${filterColumn}`);
-                if (cellValue !== filterValue) {
-                    showRow = false;
-                }
-            }
-        });
-        
-        row.style.display = showRow ? '' : 'none';
-    });
-}
-
-// Password strength checker
-function checkPasswordStrength(password) {
-    const strengthIndicator = document.querySelector('#password-strength');
-    if (!strengthIndicator) return;
-    
-    let strength = 0;
-    let feedback = '';
-    
-    if (password.length >= 8) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-    
-    switch (strength) {
-        case 0:
-        case 1:
-            feedback = 'Very Weak';
-            strengthIndicator.className = 'text-danger';
-            break;
-        case 2:
-            feedback = 'Weak';
-            strengthIndicator.className = 'text-warning';
-            break;
-        case 3:
-            feedback = 'Medium';
-            strengthIndicator.className = 'text-info';
-            break;
-        case 4:
-            feedback = 'Strong';
-            strengthIndicator.className = 'text-success';
-            break;
-        case 5:
-            feedback = 'Very Strong';
-            strengthIndicator.className = 'text-success';
-            break;
-    }
-    
-    strengthIndicator.textContent = feedback;
-}
-
-// File preview
-function showFilePreview(file, input) {
-    const previewContainer = document.querySelector('#file-preview');
-    if (!previewContainer) return;
-    
-    if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewContainer.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px;">`;
-        };
-        reader.readAsDataURL(file);
-    } else {
-        previewContainer.innerHTML = `<p class="text-muted">Selected file: ${file.name}</p>`;
-    }
-}
-
-// Initialize charts
+// Charts initialization (if Chart.js is available)
 function initializeCharts() {
-    // Blood inventory chart
-    const inventoryCtx = document.getElementById('inventory-chart');
-    if (inventoryCtx) {
-        new Chart(inventoryCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-                datasets: [{
-                    data: [12, 8, 15, 6, 4, 2, 20, 10],
-                    backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
+    if (typeof Chart !== 'undefined') {
+        // Blood inventory chart
+        const inventoryCtx = document.getElementById('bloodInventoryChart');
+        if (inventoryCtx) {
+            new Chart(inventoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+                    datasets: [{
+                        data: [12, 8, 15, 6, 4, 2, 20, 10],
+                        backgroundColor: [
+                            '#ff6b6b', '#ff8e8e', '#4ecdc4', '#45b7d1',
+                            '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    // Donation trend chart
-    const trendCtx = document.getElementById('trend-chart');
-    if (trendCtx) {
-        new Chart(trendCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Donations',
-                    data: [65, 59, 80, 81, 56, 55],
-                    borderColor: '#dc3545',
-                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        // Donation trends chart
+        const trendsCtx = document.getElementById('donationTrendsChart');
+        if (trendsCtx) {
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Donations',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#ff6b6b',
+                        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 }
+
+// Initialize charts when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCharts();
+});
 
 // Utility functions
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
+    return date.toLocaleDateString();
 }
 
 function formatCurrency(amount) {
@@ -352,10 +317,30 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// Export functions for global use
-window.BloodBankUtils = {
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Export functions for use in templates
+window.bloodBankUtils = {
+    validateForm,
+    selectBloodType,
+    setMinDate,
+    setupCharacterCounter,
+    setupSearch,
+    sortTable,
+    showLoading,
+    hideLoading,
+    openModal,
+    closeModal,
     formatDate,
-    formatCurrency,
-    updateBloodTypeInfo,
-    updatePriceCalculation
+    formatCurrency
 }; 

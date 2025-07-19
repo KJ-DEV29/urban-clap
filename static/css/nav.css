@@ -1,0 +1,269 @@
+/* Navigation Styles */
+nav {
+    background-color: #111111;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-logo h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+
+
+.nav-menu-icon {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.line {
+    width: 25px;
+    height: 4px;
+    border-radius: 100px;
+    background-color: #fff;
+    transition: 0.3s;
+}
+
+/* Hamburger animation */
+.nav-menu-icon.active .line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-menu-icon.active .line:nth-child(2) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Full page navigation overlay */
+.nav-content-full-page {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #111111;
+    z-index: 999;
+    transition: left 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4rem;
+}
+
+.nav-content-full-page.active {
+    left: 0;
+}
+
+/* Left section - Navigation links */
+.nav-menu-items {
+    list-style: none;
+    margin: 0;
+    margin-top: 3rem;
+}
+.nav-menu-items ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.nav-menu-items li {
+    height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-menu-items li a:hover {
+    transform: translateY(-50px);
+}
+
+.nav-menu-items a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    transform: translateY(25%);
+    width: 100%;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu-items a:hover {
+    color: #ff6b6b;
+}
+
+.nav-menu-items a.active::after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.authlink a {
+    font-size: 20px;
+    font-weight: 400;
+    transform: translateY(0%);
+    letter-spacing: 1px;
+    transition: none;
+}
+.authlink a:hover{
+    transform: translateY(0%);
+}
+/* Additional hover effects */
+.nav-menu-items li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.nav-menu-items li:hover::before {
+    transform: translateX(100%);
+}
+
+/* Auth links container */
+.auth-links-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Auth links styling */
+.nav-menu-items li.authlink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    overflow: visible;
+    margin: 0;
+    border-radius: 5px;
+    transition: none;
+}
+
+.nav-menu-items li.authlink::before {
+    display: none;
+}
+
+
+/* Right section - Contact info */
+.nav-contact-section {
+    display: flex;
+    align-items: center;
+    height: 80%;
+    justify-content: space-between;
+    flex-direction: column;
+    color: #fff;
+}
+
+.nav-contact-info {
+    margin-bottom: 3rem;
+}
+
+.nav-contact-info p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    color: #fff;
+}
+
+.nav-social-icons {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    justify-content: flex-end;
+}
+
+.nav-social-icons a {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-social-icons a:hover {
+    color: #ff6b6b;
+}
+
+.nav-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #fff;
+    color: #000;
+    padding: 1rem 2rem;
+    border: 2px solid #000;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.nav-contact-btn:hover {
+    background-color: #000;
+    color: #fff;
+    border-color: #fff;
+}
+/* Responsive design */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+    
+    .nav-logo h2 {
+        font-size: 1.5rem;
+    }
+    
+    .line {
+        width: 20px;
+        height: 2px;
+    }
+    
+    .nav-content-full-page {
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .nav-menu-items a {
+        font-size: 2rem;
+    }
+    
+    .nav-contact-section {
+        text-align: center;
+        margin-top: 3rem;
+    }
+    
+    .nav-social-icons {
+        justify-content: center;
+    }
+}

@@ -81,8 +81,16 @@ WSGI_APPLICATION = 'blood_donation_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'eKxPXUXbBrxbbDdpELNeMhwaZyagBIwS',
+        'HOST': 'shortline.proxy.rlwy.net',
+        'PORT': '50371',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
