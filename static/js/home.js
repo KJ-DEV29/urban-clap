@@ -43,3 +43,55 @@ gsap.from(".sec-two h1", {
     pinSpacing: true,
   },
 });
+
+
+
+
+// card - sec
+
+gsap.to(".cards-sec img", {
+  y: 0,
+  stagger: 0.1,
+  scrollTrigger: {
+    trigger: ".cards-sec .card",
+    start: "top 45%",
+    toggleActions: "play reverse play reverse",
+  },
+});
+
+gsap.to('.cards-sec' , {
+    scrollTrigger : {
+        trigger : '.cards-sec',
+        start : 'center center',
+        pin : true,
+        end : "+=400vh",
+        pinSpacing : true
+    }
+})
+
+let allCards = document.querySelectorAll(".cards-sec .card img");
+let allcardText = document.querySelectorAll(".cards-sec .card .content");
+let allcardBg = document.querySelectorAll(".cards-sec .content .bg");
+allCards.forEach((card, idx) => {
+    card.addEventListener('mouseenter' , () => {
+        gsap.to(allcardText[idx], {
+            x : 0
+        })
+
+        gsap.to(allcardBg[idx], {
+            scaleX : "100%",
+            delay : 0.2
+        })
+    })
+
+    card.addEventListener("mouseleave", () => {
+      gsap.to(allcardText[idx], {
+        x: '-100%',
+      });
+
+      gsap.to(allcardBg[idx], {
+        scaleX: "0",
+        delay: 0.2,
+      });
+    });
+})
