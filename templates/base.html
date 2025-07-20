@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Blood Bank Management System{% endblock %}</title>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
     {% load static %}
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -14,73 +16,76 @@
     <link rel="stylesheet" href="{% static 'css/hero.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
-    
+
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
     <!-- Navigation -->
-       <nav>
-         <div class="nav-logo"><h2>KJ</h2></div>
-         <div class="nav-menu-icon" id="nav-menu-icon">
-             <div class="line"></div>
-             <div class="line"></div>
-         </div>
-     </nav>
-     <div class="nav-content-full-page" id="nav-content-full-page">
-         <!-- Left section - Navigation links -->
-         <ul class="nav-menu-items">
-             <li><a href="{% url 'core:home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>Home <br>Home</a></li>
-             <li><a href="{% url 'core:services' %}" {% if request.resolver_match.url_name == 'services' %}class="active"{% endif %}>Services <br>Services</a></li>
-             <li><a href="{% url 'core:about' %}" {% if request.resolver_match.url_name == 'about' %}class="active"{% endif %}>About <br>About</a></li>
-             <li><a href="{% url 'core:enquiry' %}" {% if request.resolver_match.url_name == 'enquiry' %}class="active"{% endif %}>Enquiry <br>Enquiry</a></li>
-             <li><a href="{% url 'core:review' %}" {% if request.resolver_match.url_name == 'review' %}class="active"{% endif %}>Reviews <br>Reviews</a></li>
-             {% if user.is_authenticated %}
-                 <li><a href="{% url 'core:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
-                 <li><a href="{% url 'core:donate_blood' %}" {% if request.resolver_match.url_name == 'donate_blood' %}class="active"{% endif %}>Donate Blood</a></li>
-                 <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == 'purchase_blood' %}class="active"{% endif %}>Purchase Blood</a></li>
-                 {% if user.is_staff %}
-                     <li><a href="{% url 'core:admin_dashboard' %}" {% if request.resolver_match.url_name == 'admin_dashboard' %}class="active"{% endif %}>Admin</a></li>
-                 {% endif %}
-             {% else %}
-                 <div class="auth-links-container">
-                     <li class="authlink"><a href="{% url 'auth:login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>Login</a></li>
-                     <li class="authlink"><a href="{% url 'auth:register' %}" {% if request.resolver_match.url_name == 'register' %}class="active"{% endif %}>Register</a></li>
-                 </div>
-             {% endif %}
-         </ul>
-         
-         <!-- Right section - Contact info -->
-         <div class="nav-contact-section">
-             <div>
+    <nav>
+        <div class="nav-logo">
+            <h2>KJ</h2>
+        </div>
+        <div class="nav-menu-icon" id="nav-menu-icon">
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+    <div class="nav-content-full-page" id="nav-content-full-page">
+        <!-- Left section - Navigation links -->
+        <ul class="nav-menu-items">
+            <li><a href="{% url 'core:home' %}" {% if request.resolver_match.url_name == "home" %}class="active"{% endif %}>Home <br>Home</a></li>
+            <li><a href="{% url 'core:services' %}" {% if request.resolver_match.url_name == "services" %}class="active"{% endif %}>Services <br>Services</a></li>
+            <li><a href="{% url 'core:about' %}" {% if request.resolver_match.url_name == "about" %}class="active"{% endif %}>About <br>About</a></li>
+            <li><a href="{% url 'core:enquiry' %}" {% if request.resolver_match.url_name == "enquiry" %}class="active"{% endif %}>Enquiry <br>Enquiry</a></li>
+            <li><a href="{% url 'core:review' %}" {% if request.resolver_match.url_name == "review" %}class="active"{% endif %}>Reviews <br>Reviews</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'core:dashboard' %}" {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>Dashboard</a></li>
+            <li><a href="{% url 'core:donate_blood' %}" {% if request.resolver_match.url_name == "donate_blood" %}class="active"{% endif %}>Donate Blood</a></li>
+            <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == "purchase_blood" %}class="active"{% endif %}>Purchase Blood</a></li>
+            {% if user.is_staff %}
+            <li><a href="{% url 'core:admin_dashboard' %}" {% if request.resolver_match.url_name == "admin_dashboard" %}class="active"{% endif %}>Admin</a></li>
+            {% endif %}
+            {% else %}
+            <div class="auth-links-container">
+                <li class="authlink"><a href="{% url 'auth:login' %}" {% if request.resolver_match.url_name == "login" %}class="active"{% endif %}>Login</a></li>
+                <li class="authlink"><a href="{% url 'auth:register' %}" {% if request.resolver_match.url_name == "register" %}class="active"{% endif %}>Register</a></li>
+            </div>
+            {% endif %}
+        </ul>
+
+        <!-- Right section - Contact info -->
+        <div class="nav-contact-section">
+            <div>
                 <div class="nav-contact-info">
                     <p>Phone (+1) 234 567 8900</p>
                     <p>Email info@hemo.com</p>
                 </div>
-                
+
                 <div class="nav-social-icons">
                     <a href="#"><i class="fas fa-infinity"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fas fa-globe"></i></a>
                 </div>
-             </div>
-             
-             <a href="{% url 'core:contact' %}" class="nav-contact-btn">
-                 <i class="fas fa-phone"></i>
-                 Contact
-             </a>
-         </div>
-     </div>
+            </div>
+
+            <a href="{% url 'core:contact' %}" class="nav-contact-btn">
+                <i class="fas fa-phone"></i>
+                Contact
+            </a>
+        </div>
+    </div>
 
     <!-- Messages -->
     {% if messages %}
-        <div class="messages-container">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                    <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
-                </div>
-            {% endfor %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+            <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
         </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <!-- Main Content -->
@@ -117,8 +122,20 @@
     </footer>
 
     <!-- Custom JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+        integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"
+        integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
     <script src="{% static 'js/main.js' %}"></script>
     
+
+
     {% block extra_js %}{% endblock %}
 </body>
-</html> 
+
+</html>

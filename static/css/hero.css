@@ -1,0 +1,76 @@
+.hero {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero .top {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero .top div {
+    margin-top: 10px;
+    height: 200px;
+    overflow: hidden;
+    /* background: rebeccapurple; */
+}
+
+.hero .top div h1 {
+    font-size: 160px;
+}
+
+.hero .bottom {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.hero .bottom div {
+    height: 70px;
+}
+
+.hero .bottom .left,
+.hero .bottom .right {
+    overflow: hidden;
+    height: 70px;
+    font-size: 1.4rem;
+}
+
+.hero .bottom .left p,
+.hero .bottom .right p {
+    text-align: right;
+}
+
+.hero>img {
+    position: absolute;
+}
+
+
+.sec-two {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.sec-two>div {
+    max-width: 1200px;
+}
+
+.sec-two h1 {
+    font-size: 66px;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #aaa;
+}
+
+.sec-two h1 b {
+    color: white;
+    text-transform: capitalize;
+}
