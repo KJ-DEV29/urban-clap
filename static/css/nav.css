@@ -1,11 +1,11 @@
 /* Navigation Styles */
 nav {
     background-color: #000;
-    padding: 1rem 0;
+    padding: 1rem 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    position: relative;
     top: 0;
     width: 100%;
     z-index: 1000;
@@ -27,7 +27,9 @@ nav {
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    z-index: 10001;
     gap: 12px;
+    /* margin-right: 7px; */
 }
 
 .line {
