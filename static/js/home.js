@@ -97,50 +97,56 @@ allCards.forEach((card, idx) => {
 })
 
 
-
-
 // event-sec
 
-gsap.from('.events',{
-  y : 100,
-  opacity : 0,
-  scrollTrigger : {
-    trigger : ".event",
-    start :"center bottom",
-    toggleActions : "play reverse play reverse"
-  }
-})
+let eventCards = Array.from(
+  document.querySelectorAll(".event-sec .event")
+).reverse();
 
+// Set initial rotation and opacity for all cards
+gsap.set(eventCards, {
+  // rotate: -10,
+  // opacity: 0,
+  // y: 100,
+});
 
-let eventCard = document.querySelectorAll('.event-sec .event')
-
-eventCard.forEach((card, i) => {
-  let tl = gsap.timeline({
-    scrollTrigger : {
-      trigger : '.event-sec',
-      start : `center ${(i+1)*100+50 }vh`,
-      // scrub : 1
-      toggleActions : 'play reverse play reverse'
-    }
-  })
-  tl.to(card,{
-    rotate : 0,
-  }).to(card, {
-    y: '-100%',
-    opacity : 0
-  })
-  
-})
-
-
-gsap.from(".event-sec", {
+// Create a master timeline tied to scroll
+let masterTL = gsap.timeline({
   scrollTrigger: {
     trigger: ".event-sec",
-    start: "center center",
-    end: '+=800vh',
-    pin : true,
-    pinSpacing : true
+    start: "top top",
+    end: `+=${eventCards.length * 150}vh`, // 100vh per card
+    pin: true,
+    scrub: true,
+    anticipatePin: 1,
   },
+});
+
+// Animate each card in sequence
+eventCards.forEach((card, i) => {
+  masterTL
+    .to(
+      card,
+      {
+        opacity: 1,
+        rotate: 0,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      },
+      i
+    ) // position at index in timeline
+
+    .to(
+      card,
+      {
+        opacity: 0,
+        y: -100,
+        duration: 0.5,
+        ease: "power2.in",
+      },
+      i + 0.5
+    );
 });
 
 
