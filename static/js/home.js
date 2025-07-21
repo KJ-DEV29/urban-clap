@@ -95,3 +95,52 @@ allCards.forEach((card, idx) => {
       });
     });
 })
+
+
+
+
+// event-sec
+
+gsap.from('.events',{
+  y : 100,
+  opacity : 0,
+  scrollTrigger : {
+    trigger : ".event",
+    start :"center bottom",
+    toggleActions : "play reverse play reverse"
+  }
+})
+
+
+let eventCard = document.querySelectorAll('.event-sec .event')
+
+eventCard.forEach((card, i) => {
+  let tl = gsap.timeline({
+    scrollTrigger : {
+      trigger : '.event-sec',
+      start : `center ${(i+1)*100+50 }vh`,
+      // scrub : 1
+      toggleActions : 'play reverse play reverse'
+    }
+  })
+  tl.to(card,{
+    rotate : 0,
+  }).to(card, {
+    y: '-100%',
+    opacity : 0
+  })
+  
+})
+
+
+gsap.from(".event-sec", {
+  scrollTrigger: {
+    trigger: ".event-sec",
+    start: "center center",
+    end: '+=800vh',
+    pin : true,
+    pinSpacing : true
+  },
+});
+
+
