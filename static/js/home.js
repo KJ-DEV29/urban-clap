@@ -150,3 +150,30 @@ eventCards.forEach((card, i) => {
 });
 
 
+
+// learnmore
+let learnmoreTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".how-it-works",
+    start : 'top center',
+  },
+});
+
+learnmoreTl.to('.how-it-works .part div',{
+  width : 200,
+}).to('.how-it-works img',{
+  x : 0
+}).to('.how-it-works .part div p',{
+  y:0,
+})
+
+gsap.to('.how-it-works',{
+  scrollTrigger : {
+    trigger : ".how-it-works",
+    start: "center center",
+    end : "+=300vh",
+    pin : true,
+    pinSpacing : true,
+   
+  }
+})
