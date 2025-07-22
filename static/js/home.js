@@ -177,3 +177,48 @@ gsap.to('.how-it-works',{
    
   }
 })
+
+
+
+
+
+// faq
+gsap.to('.faq-slider',{
+  scrollTrigger : {
+    trigger : '.faq-slider',
+    pin:true,
+    start : "top 10%",
+    end : "+=1000vh",
+    pinSpacing : false
+  }
+})
+
+
+// qna
+
+let qnas = document.querySelectorAll('.qna-sec .qna')
+let allQnaH2 = document.querySelectorAll('.qna-sec .qna h2')
+qnas.forEach((qna, i) => {
+  qna.addEventListener('click', () => {
+
+    gsap.to('.qna-sec .qna',{
+      height : 140
+    })
+
+    gsap.to(qna,{
+      height : 270,
+    })
+
+
+    gsap.to(allQnaH2, {
+      background: "#1a1a1a",
+    });
+    gsap.to(allQnaH2[i],{
+      background : 'transparent',
+
+    })
+
+  })
+})
+
+

@@ -309,12 +309,6 @@ faq-slider {
 
 
 
-.next {
-    height: 100vh;
-    width: 100vw;
-}
-
-
 
 .lets-become {
     width: 100%;
@@ -344,4 +338,39 @@ faq-slider {
     justify-content: center;
     gap: 10px;
     font-size: 20px;
+}
+
+
+
+.qna-sec{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.qna-sec>div{
+    backdrop-filter: blur(50px);
+    max-width: 1200px;
+    padding: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.qna-sec .qna{
+    height: 140px;
+    cursor: pointer;
+    overflow: hidden;
+}
+.qna-sec h2{
+    font-size: 1.7rem;
+    padding: 3rem 1rem;
+    background: #1A1A1A;
+}
+.qna-sec .a{
+    font-size: 1.3rem;
+    padding: 2rem;
+    width: 800px;
 }
