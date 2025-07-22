@@ -156,6 +156,7 @@ let learnmoreTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".how-it-works",
     start : 'top center',
+    toggleActions : 'play reverse play reverse'
   },
 });
 
@@ -171,13 +172,32 @@ gsap.to('.how-it-works',{
   scrollTrigger : {
     trigger : ".how-it-works",
     start: "center center",
-    end : "+=300vh",
+    end : "+=200vh",
     pin : true,
     pinSpacing : true,
-   
+    anticipatePin : true
   }
 })
 
+gsap.to('.steps-sec .step-odd',{
+  y : 200,
+  scrollTrigger : {
+    trigger : '.steps-sec',
+    start : "top bottom",
+    end : "bottom top",
+    scrub : 0.1
+  }
+})
+
+gsap.to(".steps-sec .step-even", {
+  y: -200,
+  scrollTrigger: {
+    trigger: ".steps-sec",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 0.1,
+  },
+});
 
 
 
