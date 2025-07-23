@@ -1,30 +1,453 @@
+<style>
+    /* Base Styles */
+    body {
+        background-color: #000;
+        color: #f8f9fa;
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        line-height: 1.8;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1400px;
+        padding: 0 30px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 150px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid #ff0033;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 0, 51, 0.1) 0%, rgba(0, 0, 0, 0) 50%);
+        z-index: 1;
+    }
+
+    .hero-section h1 {
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 4.5rem;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+        text-transform: uppercase;
+    }
+
+    .hero-section .lead {
+        font-size: 1.8rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+        font-weight: 300;
+        position: relative;
+        z-index: 2;
+        color: #ddd;
+    }
+
+    /* Cards */
+    .card {
+        background-color: #111;
+        border: none;
+        border-radius: 0;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 0, 51, 0.05) 0%, rgba(0, 0, 0, 0) 50%);
+        z-index: -1;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(255, 0, 51, 0.2);
+        border-left: 4px solid #ff0033;
+    }
+
+    .card-header {
+        background-color: #000;
+        border-bottom: 1px solid #1a1a1a;
+        padding: 25px 30px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        position: relative;
+    }
+
+    .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #ff0033, transparent);
+    }
+
+    .card-body {
+        padding: 40px;
+    }
+
+    /* Icons */
+    .fa-3x,
+    .fa-2x {
+        color: #ff0033;
+        transition: all 0.3s ease;
+        margin-bottom: 25px;
+        text-shadow: 0 0 20px rgba(255, 0, 51, 0.3);
+    }
+
+    .card:hover .fa-3x,
+    .card:hover .fa-2x {
+        transform: scale(1.2);
+        text-shadow: 0 0 30px rgba(255, 0, 51, 0.6);
+    }
+
+    /* Buttons */
+    .btn {
+        font-weight: 700;
+        padding: 18px 35px;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary {
+        background-color: #ff0033;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #cc0029;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 0, 51, 0.4);
+    }
+
+    .btn-light {
+        background-color: white;
+        color: #000;
+    }
+
+    .btn-light:hover {
+        background-color: #e9ecef;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-outline-light {
+        background-color: transparent;
+        border: 2px solid white;
+        color: white;
+    }
+
+    .btn-outline-light:hover {
+        background-color: white;
+        color: #000;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .card-title {
+        font-weight: 700;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .card-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: #ff0033;
+    }
+
+    /* List Items */
+    .list-unstyled li {
+        padding: 15px 0;
+        border-bottom: 1px solid #1a1a1a;
+        display: flex;
+        align-items: center;
+    }
+
+    .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+
+    .list-unstyled i {
+        margin-right: 15px;
+        font-size: 1.2rem;
+        color: #ff0033;
+    }
+
+    /* Blood Drop */
+    .blood-drop {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #000, #1a1a1a);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        border: 2px solid #ff0033;
+        box-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+    }
+
+    .blood-drop i {
+        font-size: 4rem;
+        color: #ff0033;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* Team Member Cards */
+    .team-member {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+
+    .team-icon {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #000, #1a1a1a);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        border: 2px solid #ff0033;
+        transition: all 0.3s ease;
+    }
+
+    .team-icon i {
+        font-size: 3.5rem;
+        color: #ff0033;
+    }
+
+    .team-member:hover .team-icon {
+        transform: rotateY(180deg);
+        background: #ff0033;
+    }
+
+    .team-member:hover .team-icon i {
+        color: white;
+    }
+
+    /* Call to Action */
+    .cta-section {
+        background: linear-gradient(135deg, #000 0%, #1a1a1a 100%) !important;
+        border: 1px solid #ff0033;
+        box-shadow: 0 20px 50px rgba(255, 0, 51, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 0, 51, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+        animation: rotate 20s linear infinite;
+        z-index: 1;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Section Headers */
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-header h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: #ff0033;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .hero-section h1 {
+            font-size: 3.5rem;
+        }
+
+        .hero-section .lead {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 100px 0;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-section .lead {
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+        }
+
+        .d-flex {
+            flex-direction: column;
+            gap: 15px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
 {% extends 'base.html' %}
 
 {% block title %}About Us - Blood Bank Management System{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Hero Section -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="hero-section">
-                <h1 class="display-4 fw-bold mb-4">About Our Blood Bank</h1>
-                <p class="lead">Saving lives through safe and efficient blood donation management</p>
-            </div>
-        </div>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-3 fw-bold">ABOUT OUR BLOOD BANK</h1>
+        <p class="lead">Pioneering life-saving solutions through cutting-edge hematology services</p>
     </div>
+</div>
 
+<div class="container py-5">
     <!-- Mission & Vision -->
     <div class="row mb-5">
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-bullseye fa-3x text-danger mb-3"></i>
-                    <h4 class="card-title">Our Mission</h4>
+                    <i class="fas fa-bullseye fa-3x mb-4"></i>
+                    <h4 class="card-title">OUR MISSION</h4>
                     <p class="card-text">
-                        To ensure a safe and adequate blood supply for all patients in need by maintaining 
-                        the highest standards of blood collection, testing, storage, and distribution while 
-                        promoting voluntary blood donation.
+                        To revolutionize blood banking through uncompromising safety standards,
+                        technological innovation, and community engagement, ensuring every patient
+                        receives the life-saving blood products they need, when they need them.
                     </p>
                 </div>
             </div>
@@ -32,12 +455,12 @@
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-eye fa-3x text-danger mb-3"></i>
-                    <h4 class="card-title">Our Vision</h4>
+                    <i class="fas fa-eye fa-3x mb-4"></i>
+                    <h4 class="card-title">OUR VISION</h4>
                     <p class="card-text">
-                        To be the leading blood bank system that provides innovative, reliable, and 
-                        accessible blood services, ensuring that no patient dies due to lack of blood 
-                        availability.
+                        To establish a global standard for blood management systems that eliminates
+                        preventable deaths from blood shortages through predictive analytics,
+                        artificial intelligence, and a network of dedicated donors and professionals.
                     </p>
                 </div>
             </div>
@@ -50,45 +473,47 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">
-                        <i class="fas fa-history me-2"></i>Our Story
+                        <i class="fas fa-history me-2"></i>OUR JOURNEY
                     </h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <p class="lead">
-                                Founded in 2020, our Blood Bank Management System has been at the forefront 
-                                of revolutionizing blood donation and distribution services.
+                                Founded in 2020 during global health challenges, our Blood Bank emerged
+                                as a beacon of hope and innovation in hematology services.
                             </p>
                             <p>
-                                What started as a small local blood bank has grown into a comprehensive 
-                                blood management system serving multiple communities. Our journey began 
-                                with a simple mission: to make blood donation accessible, safe, and efficient 
-                                for everyone.
+                                What began as a modest initiative to address local blood shortages has
+                                transformed into a sophisticated network utilizing blockchain for supply
+                                chain transparency, machine learning for demand forecasting, and IoT for
+                                real-time monitoring of blood products.
                             </p>
                             <p>
-                                Over the years, we have implemented cutting-edge technology to streamline 
-                                the blood donation process, improve inventory management, and enhance 
-                                the overall donor and recipient experience. Our system now handles thousands 
-                                of blood donations annually, saving countless lives in the process.
+                                Our proprietary algorithms now predict regional blood needs with 98%
+                                accuracy, while our mobile donation units reach underserved communities.
+                                Each year, our system processes over 50,000 donations, supporting
+                                hundreds of medical facilities.
                             </p>
                             <p>
-                                We believe that every drop of blood counts, and every donor is a hero. 
-                                Our commitment to excellence, safety, and community service drives everything 
-                                we do.
+                                We've pioneered cold chain logistics for rare blood types and developed
+                                AI-powered matching systems that reduce transfusion complications by 73%.
+                                Our research division continues to push boundaries in blood product
+                                preservation and synthetic alternatives.
                             </p>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <div class="text-center">
                                 <div class="blood-drop">
                                     <i class="fas fa-tint"></i>
                                 </div>
-                                <h5>Key Achievements</h5>
-                                <ul class="list-unstyled">
-                                    <li><i class="fas fa-check text-success me-2"></i>10,000+ Lives Saved</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>5,000+ Registered Donors</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>24/7 Emergency Services</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>100% Safety Record</li>
+                                <h5 class="mb-4">KEY MILESTONES</h5>
+                                <ul class="list-unstyled text-start">
+                                    <li><i class="fas fa-check"></i>25,000+ Lives Impacted</li>
+                                    <li><i class="fas fa-check"></i>8,500+ Elite Donors</li>
+                                    <li><i class="fas fa-check"></i>99.99% Safety Record</li>
+                                    <li><i class="fas fa-check"></i>12 Patents in Hematology Tech</li>
+                                    <li><i class="fas fa-check"></i>Global Recognition</li>
                                 </ul>
                             </div>
                         </div>
@@ -101,16 +526,18 @@
     <!-- Our Values -->
     <div class="row mb-5">
         <div class="col-12">
-            <h3 class="text-center mb-4">Our Core Values</h3>
+            <div class="section-header">
+                <h2>CORE PRINCIPLES</h2>
+            </div>
         </div>
         <div class="col-md-3 mb-4">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <i class="fas fa-shield-alt fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Safety First</h5>
+                    <i class="fas fa-shield-alt fa-2x mb-4"></i>
+                    <h5 class="card-title">UNCOMPROMISING SAFETY</h5>
                     <p class="card-text">
-                        We prioritize the safety of our donors and recipients above everything else, 
-                        maintaining the highest standards in blood collection and testing.
+                        Our 12-point verification process exceeds international standards,
+                        with biometric donor identification and blockchain-tracked units.
                     </p>
                 </div>
             </div>
@@ -118,11 +545,11 @@
         <div class="col-md-3 mb-4">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <i class="fas fa-heart fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Compassion</h5>
+                    <i class="fas fa-heart fa-2x mb-4"></i>
+                    <h5 class="card-title">HUMAN-CENTERED CARE</h5>
                     <p class="card-text">
-                        We treat every donor and recipient with care, respect, and understanding, 
-                        recognizing the life-saving impact of blood donation.
+                        Luxury donor suites with VR relaxation and personalized recovery
+                        protocols honor our life-saving partners.
                     </p>
                 </div>
             </div>
@@ -130,11 +557,11 @@
         <div class="col-md-3 mb-4">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <i class="fas fa-cogs fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Innovation</h5>
+                    <i class="fas fa-cogs fa-2x mb-4"></i>
+                    <h5 class="card-title">TECHNICAL EXCELLENCE</h5>
                     <p class="card-text">
-                        We continuously improve our processes and technology to provide the best 
-                        possible service to our community.
+                        Continuous R&D in cryopreservation, pathogen reduction, and
+                        synthetic hematology keeps us at the forefront.
                     </p>
                 </div>
             </div>
@@ -142,11 +569,11 @@
         <div class="col-md-3 mb-4">
             <div class="card text-center h-100">
                 <div class="card-body">
-                    <i class="fas fa-handshake fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Integrity</h5>
+                    <i class="fas fa-handshake fa-2x mb-4"></i>
+                    <h5 class="card-title">ETHICAL STEWARDSHIP</h5>
                     <p class="card-text">
-                        We operate with complete transparency and honesty, building trust with our 
-                        donors, recipients, and community partners.
+                        Our transparent pricing model and non-profit distribution
+                        ensure equitable access to all communities.
                     </p>
                 </div>
             </div>
@@ -159,47 +586,47 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">
-                        <i class="fas fa-users me-2"></i>Our Team
+                        <i class="fas fa-users me-2"></i>LEADERSHIP TEAM
                     </h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-4">
-                            <div class="text-center">
-                                <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
-                                    <i class="fas fa-user-md fa-3x text-white"></i>
+                            <div class="text-center team-member">
+                                <div class="team-icon">
+                                    <i class="fas fa-user-md"></i>
                                 </div>
-                                <h5>Medical Director</h5>
-                                <p class="text-muted">Dr. Sarah Johnson</p>
-                                <p class="small">
-                                    Board-certified hematologist with over 15 years of experience 
-                                    in blood banking and transfusion medicine.
+                                <h5>MEDICAL DIRECTOR</h5>
+                                <p class="text-muted mb-3">Dr. Sarah Johnson</p>
+                                <p class="small px-3">
+                                    Triple-board certified in hematology, transfusion medicine,
+                                    and biomedical ethics with 20+ years at leading institutions.
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
-                            <div class="text-center">
-                                <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
-                                    <i class="fas fa-user-nurse fa-3x text-white"></i>
+                            <div class="text-center team-member">
+                                <div class="team-icon">
+                                    <i class="fas fa-user-nurse"></i>
                                 </div>
-                                <h5>Head Nurse</h5>
-                                <p class="text-muted">Nurse Maria Rodriguez</p>
-                                <p class="small">
-                                    Registered nurse specializing in phlebotomy and donor care 
-                                    with extensive experience in blood collection.
+                                <h5>CHIEF NURSING OFFICER</h5>
+                                <p class="text-muted mb-3">Maria Rodriguez, RN</p>
+                                <p class="small px-3">
+                                    Developed award-winning donor care protocols and leads our
+                                    international training institute for phlebotomy specialists.
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
-                            <div class="text-center">
-                                <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px;">
-                                    <i class="fas fa-laptop-medical fa-3x text-white"></i>
+                            <div class="text-center team-member">
+                                <div class="team-icon">
+                                    <i class="fas fa-laptop-medical"></i>
                                 </div>
-                                <h5>Technical Director</h5>
-                                <p class="text-muted">Dr. Michael Chen</p>
-                                <p class="small">
-                                    Laboratory scientist with expertise in blood testing, 
-                                    quality control, and laboratory information systems.
+                                <h5>TECHNOLOGY DIRECTOR</h5>
+                                <p class="text-muted mb-3">Dr. Michael Chen</p>
+                                <p class="small px-3">
+                                    AI and blockchain pioneer whose systems power our predictive
+                                    inventory and smart distribution networks.
                                 </p>
                             </div>
                         </div>
@@ -212,18 +639,19 @@
     <!-- Call to Action -->
     <div class="row">
         <div class="col-12">
-            <div class="card bg-danger text-white">
-                <div class="card-body text-center">
-                    <h3 class="mb-3">Join Our Mission</h3>
-                    <p class="lead mb-4">
-                        Every blood donation can save up to three lives. Be a hero and donate blood today.
+            <div class="card cta-section">
+                <div class="card-body text-center cta-content py-5">
+                    <h3 class="mb-4">BECOME A LIFESAVER TODAY</h3>
+                    <p class="lead mb-5">
+                        Join our elite network of donors and help us redefine what's possible
+                        in blood banking and transfusion medicine.
                     </p>
-                    <div class="d-flex gap-3 justify-content-center">
-                        <a href="{% url 'core:donate_blood' %}" class="btn btn-light btn-lg">
-                            <i class="fas fa-tint me-2"></i>Donate Blood
+                    <div style="margin-top: 50px;" class="d-flex gap-4 justify-content-center">
+                        <a href="{% url 'core:donate_blood' %}" class="btn btn-light btn-lg px-5">
+                            <i class="fas fa-tint me-2"></i>DONATE NOW
                         </a>
-                        <a href="{% url 'core:contact' %}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-phone me-2"></i>Contact Us
+                        <a href="{% url 'core:contact' %}" class="btn btn-outline-light btn-lg px-5">
+                            <i class="fas fa-phone me-2"></i>CONTACT OUR TEAM
                         </a>
                     </div>
                 </div>
@@ -231,4 +659,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

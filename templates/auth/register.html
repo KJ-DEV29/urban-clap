@@ -1,243 +1,633 @@
+<style>
+    /* Base Styles */
+    body {
+        background-color: #000;
+        color: #f8f9fa;
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        align-items: center;
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Registration Card */
+    .register-card {
+        background-color: rgba(17, 17, 17, 0.95);
+        border: none;
+        border-radius: 0;
+        box-shadow: 0 15px 50px rgba(255, 0, 51, 0.2);
+        overflow: hidden;
+        border-left: 5px solid #ff0033;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        backdrop-filter: blur(10px);
+    }
+
+    .register-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(255, 0, 51, 0.3);
+    }
+
+    .card-header {
+        background-color: rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #1a1a1a;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #ff0033, transparent);
+    }
+
+    .card-header h4 {
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0;
+        color: white;
+    }
+
+    .card-header i {
+        color: #ff0033;
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 40px;
+    }
+
+    /* Section Headers */
+    .section-header {
+        color: #ff0033;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .section-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: #ff0033;
+    }
+
+    /* Form Elements */
+    .form-label {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        display: block;
+        color: #ddd;
+    }
+
+    .form-control {
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #1a1a1a;
+        border-radius: 0;
+        color: white;
+        padding: 15px;
+        height: auto;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-color: #ff0033;
+        box-shadow: 0 0 0 0.25rem rgba(255, 0, 51, 0.25);
+        color: white;
+    }
+
+    /* Buttons */
+    .btn {
+        font-weight: 700;
+        padding: 15px 30px;
+        border-radius: 0;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary {
+        background-color: #ff0033;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #cc0029;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 0, 51, 0.3);
+    }
+
+    .btn-outline-primary {
+        background-color: transparent;
+        border: 2px solid #ff0033;
+        color: #ff0033;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #ff0033;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 0, 51, 0.3);
+    }
+
+    /* Divider */
+    .divider {
+        border-top: 1px solid #1a1a1a;
+        position: relative;
+        margin: 30px 0;
+    }
+
+    .divider::after {
+        content: 'OR';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #111;
+        padding: 0 15px;
+        color: #777;
+        font-size: 0.8rem;
+    }
+
+    /* Password Strength Meter */
+    .password-strength {
+        height: 5px;
+        background-color: #1a1a1a;
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .password-strength::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        background-color: #ff0033;
+        transition: width 0.3s ease;
+    }
+
+    .strength-weak::before {
+        width: 25%;
+        background-color: #dc3545;
+    }
+
+    .strength-medium::before {
+        width: 50%;
+        background-color: #fd7e14;
+    }
+
+    .strength-strong::before {
+        width: 75%;
+        background-color: #ffc107;
+    }
+
+    .strength-very-strong::before {
+        width: 100%;
+        background-color: #28a745;
+    }
+
+    .strength-feedback {
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    input{
+        width: 100%;
+    }
+    button{
+        width: 100%;
+    }
+    /* Checkbox */
+    .form-check-input {
+        background-color: #1a1a1a;
+        border: 1px solid #1a1a1a;
+    }
+
+    .form-check-input:checked {
+        background-color: #ff0033;
+        border-color: #ff0033;
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.25rem rgba(255, 0, 51, 0.25);
+    }
+
+    /* Benefits Card */
+    .benefits-card {
+        background-color: rgba(17, 17, 17, 0.8);
+        border: none;
+        border-radius: 0;
+        margin-top: 30px;
+        border-left: 5px solid #1a1a1a;
+        transition: all 0.3s ease;
+    }
+
+    .benefits-card:hover {
+        border-left-color: #ff0033;
+    }
+
+    .benefits-card .card-title {
+        color: #ff0033;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .benefits-card .list-unstyled li {
+        padding: 10px 0;
+        border-bottom: 1px dashed #1a1a1a;
+        display: flex;
+        align-items: center;
+    }
+
+    .benefits-card .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+
+    .benefits-card i {
+        color: #ff0033;
+        margin-right: 10px;
+    }
+
+    /* Error Messages */
+    .invalid-feedback {
+        color: #ff6b6b;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .card-body {
+            padding: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card-header {
+            padding: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-header h4 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
 {% extends 'base.html' %}
 
-{% block title %}Register - Blood Bank Management System{% endblock %}
+{% block title %}Secure Registration - Blood Bank Management System{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-lg">
-                <div class="card-header text-center">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-plus me-2"></i>Create Account
-                    </h4>
+        <div class="col-lg-10">
+            <!-- Main Registration Card -->
+            <div class="card register-card">
+                <div class="card-header">
+                    <h4><i class="fas fa-user-shield"></i> DONOR REGISTRATION PORTAL</h4>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
-                        
+
                         <div class="row">
                             <!-- Personal Information -->
                             <div class="col-md-6">
-                                <h6 class="mb-3">
-                                    <i class="fas fa-user me-2"></i>Personal Information
+                                <h6 class="section-header">
+                                    <i class="fas fa-id-card"></i> PERSONAL DETAILS
                                 </h6>
-                                
-                                <div class="mb-3">
-                                    <label for="{{ form.username.id_for_label }}" class="form-label">Username *</label>
-                                    {{ form.username }}
+
+                                <div class="mb-4">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label">USERNAME *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-user text-danger"></i>
+                                        </span>
+                                        {{ form.username }}
+                                    </div>
                                     {% if form.username.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.username.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.username.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name *</label>
+                                <div class="mb-4">
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">FIRST NAME
+                                        *</label>
                                     {{ form.first_name }}
                                     {% if form.first_name.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.first_name.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.first_name.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name *</label>
+                                <div class="mb-4">
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">LAST NAME
+                                        *</label>
                                     {{ form.last_name }}
                                     {% if form.last_name.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.last_name.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.last_name.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email *</label>
-                                    {{ form.email }}
+                                <div class="mb-4">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">EMAIL *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-envelope text-danger"></i>
+                                        </span>
+                                        {{ form.email }}
+                                    </div>
                                     {% if form.email.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.email.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.email.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.phone.id_for_label }}" class="form-label">Phone Number *</label>
-                                    {{ form.phone }}
+                                <div class="mb-4">
+                                    <label for="{{ form.phone.id_for_label }}" class="form-label">PHONE *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-phone text-danger"></i>
+                                        </span>
+                                        {{ form.phone }}
+                                    </div>
                                     {% if form.phone.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.phone.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.phone.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>
 
                             <!-- Address Information -->
                             <div class="col-md-6">
-                                <h6 class="mb-3">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Address Information
+                                <h6 class="section-header">
+                                    <i class="fas fa-map-marked-alt"></i> ADDRESS DETAILS
                                 </h6>
-                                
-                                <div class="mb-3">
-                                    <label for="{{ form.address.id_for_label }}" class="form-label">Address *</label>
-                                    {{ form.address }}
+
+                                <div class="mb-4">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">ADDRESS *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-home text-danger"></i>
+                                        </span>
+                                        {{ form.address }}
+                                    </div>
                                     {% if form.address.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.address.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.address.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.city.id_for_label }}" class="form-label">City *</label>
+                                <div class="mb-4">
+                                    <label for="{{ form.city.id_for_label }}" class="form-label">CITY *</label>
                                     {{ form.city }}
                                     {% if form.city.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.city.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.city.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.state.id_for_label }}" class="form-label">State *</label>
+                                <div class="mb-4">
+                                    <label for="{{ form.state.id_for_label }}" class="form-label">STATE *</label>
                                     {{ form.state }}
                                     {% if form.state.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.state.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.state.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.zip_code.id_for_label }}" class="form-label">ZIP Code *</label>
-                                    {{ form.zip_code }}
+                                <div class="mb-4">
+                                    <label for="{{ form.zip_code.id_for_label }}" class="form-label">ZIP CODE *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-mail-bulk text-danger"></i>
+                                        </span>
+                                        {{ form.zip_code }}
+                                    </div>
                                     {% if form.zip_code.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.zip_code.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.zip_code.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth *</label>
-                                    {{ form.date_of_birth }}
+                                <div class="mb-4">
+                                    <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">DATE OF BIRTH
+                                        *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-calendar-alt text-danger"></i>
+                                        </span>
+                                        {{ form.date_of_birth }}
+                                    </div>
                                     {% if form.date_of_birth.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.date_of_birth.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.date_of_birth.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Password Section -->
-                        <hr class="my-4">
-                        <h6 class="mb-3">
-                            <i class="fas fa-lock me-2"></i>Security Information
+                        <!-- Security Section -->
+                        <div class="divider"></div>
+
+                        <h6 class="section-header">
+                            <i class="fas fa-lock"></i> SECURITY INFORMATION
                         </h6>
-                        
+
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="{{ form.password1.id_for_label }}" class="form-label">Password *</label>
-                                    {{ form.password1 }}
+                                <div class="mb-4">
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label">PASSWORD *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-key text-danger"></i>
+                                        </span>
+                                        {{ form.password1 }}
+                                        <button class="btn btn-outline-secondary bg-black border-start-0" type="button"
+                                            id="togglePassword1">
+                                            <i class="fas fa-eye text-danger"></i>
+                                        </button>
+                                    </div>
+                                    <div class="password-strength mt-2" id="password-strength"></div>
+                                    <small class="strength-feedback d-block"></small>
                                     {% if form.password1.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.password1.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.password1.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
-                                    <div id="password-strength" class="form-text"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password *</label>
-                                    {{ form.password2 }}
+                                <div class="mb-4">
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label">CONFIRM PASSWORD
+                                        *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-black border-end-0">
+                                            <i class="fas fa-key text-danger"></i>
+                                        </span>
+                                        {{ form.password2 }}
+                                        <button class="btn btn-outline-secondary bg-black border-start-0" type="button"
+                                            id="togglePassword2">
+                                            <i class="fas fa-eye text-danger"></i>
+                                        </button>
+                                    </div>
                                     {% if form.password2.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in form.password2.errors %}
-                                                {{ error }}
-                                            {% endfor %}
-                                        </div>
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.password2.errors %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Donor Option -->
-                        <div class="mb-4">
+                        <div style="margin-bottom: 30px;" class="mb-4">
                             <div class="form-check">
                                 {{ form.is_donor }}
                                 <label class="form-check-label" for="{{ form.is_donor.id_for_label }}">
-                                    <i class="fas fa-tint me-2"></i>I would like to register as a blood donor
+                                    <i class="fas fa-tint text-danger me-2"></i>I WANT TO REGISTER AS A BLOOD DONOR
                                 </label>
                             </div>
-                            <small class="form-text text-muted">
-                                Check this box if you're interested in donating blood. You can always update this later.
+                            <small class="text-muted d-block mt-2">
+                                By checking this box, you agree to be contacted about blood donation opportunities.
                             </small>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-user-plus me-2"></i>Create Account
+                        <!-- Submit Button -->
+                        <div style="margin-top: 20px;" class="d-grid mt-5">
+                            <button type="submit" class="btn btn-primary py-3">
+                                <i class="fas fa-user-plus me-2"></i> COMPLETE REGISTRATION
                             </button>
                         </div>
                     </form>
 
-                    <hr class="my-4">
+                    <!-- Login Prompt -->
+                    <div class="divider"></div>
 
-                    <div class="text-center">
-                        <p class="mb-2">Already have an account?</p>
+                    <div  class="text-center">
+                        <p style="margin-bottom: 20px;" class="mb-3">ALREADY HAVE AN ACCOUNT?</p>
                         <a href="{% url 'auth:login' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                            <i class="fas fa-sign-in-alt me-2"></i> LOGIN TO YOUR ACCOUNT
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Benefits Card -->
-            <div class="card mt-4">
+            <div class="card benefits-card">
                 <div class="card-body">
                     <h6 class="card-title">
-                        <i class="fas fa-star me-2"></i>Benefits of Registration
+                        <i class="fas fa-award text-danger"></i> DONOR BENEFITS
                     </h6>
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success me-2"></i>Track donation history</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Schedule appointments</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Receive notifications</li>
+                                <li><i class="fas fa-heartbeat text-danger me-2"></i>Free health screening with each
+                                    donation</li>
+                                <li><i class="fas fa-chart-line text-danger me-2"></i>Track your donation history and
+                                    health metrics</li>
+                                <li><i class="fas fa-gift text-danger me-2"></i>Exclusive rewards and recognition</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success me-2"></i>Purchase blood when needed</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Access to emergency services</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Community support</li>
+                                <li><i class="fas fa-bell text-danger me-2"></i>Priority notifications during
+                                    emergencies</li>
+                                <li><i class="fas fa-hand-holding-heart text-danger me-2"></i>Community hero status</li>
+                                <li><i class="fas fa-shield-alt text-danger me-2"></i>VIP access to blood when needed
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -246,13 +636,103 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
 <script>
+    // Password visibility toggle
+    document.getElementById('togglePassword1').addEventListener('click', function () {
+        const passwordInput = document.getElementById('{{ form.password1.id_for_label }}');
+        const icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    document.getElementById('togglePassword2').addEventListener('click', function () {
+        const passwordInput = document.getElementById('{{ form.password2.id_for_label }}');
+        const icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
     // Password strength indicator
-    document.getElementById('{{ form.password1.id_for_label }}').addEventListener('input', function() {
+    function checkPasswordStrength(password) {
+        const strengthBar = document.getElementById('password-strength');
+        const feedback = document.querySelector('.strength-feedback');
+
+        // Reset classes
+        strengthBar.className = 'password-strength mt-2';
+        feedback.className = 'strength-feedback d-block';
+
+        if (!password) {
+            feedback.textContent = '';
+            return;
+        }
+
+        // Calculate strength
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+        if (password.match(/\d/)) strength++;
+        if (password.match(/[^a-zA-Z\d]/)) strength++;
+
+        // Update UI
+        switch (strength) {
+            case 0:
+            case 1:
+                strengthBar.classList.add('strength-weak');
+                feedback.textContent = 'Weak password';
+                feedback.style.color = '#dc3545';
+                break;
+            case 2:
+                strengthBar.classList.add('strength-medium');
+                feedback.textContent = 'Medium password';
+                feedback.style.color = '#fd7e14';
+                break;
+            case 3:
+                strengthBar.classList.add('strength-strong');
+                feedback.textContent = 'Strong password';
+                feedback.style.color = '#ffc107';
+                break;
+            case 4:
+                strengthBar.classList.add('strength-very-strong');
+                feedback.textContent = 'Very strong password';
+                feedback.style.color = '#28a745';
+                break;
+        }
+    }
+
+    document.getElementById('{{ form.password1.id_for_label }}').addEventListener('input', function () {
         checkPasswordStrength(this.value);
     });
+
+    // Add animation to form inputs on focus
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function () {
+            if (this.parentElement.querySelector('.input-group-text')) {
+                this.parentElement.querySelector('.input-group-text').style.borderColor = '#ff0033';
+            }
+        });
+
+        input.addEventListener('blur', function () {
+            if (this.parentElement.querySelector('.input-group-text')) {
+                this.parentElement.querySelector('.input-group-text').style.borderColor = '';
+            }
+        });
+    });
 </script>
-{% endblock %} 
+{% endblock %}

@@ -9,7 +9,7 @@ from core.models import UserProfile
 def user_login(request):
     """User login view"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('core:dashboard')
     
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
@@ -20,7 +20,7 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {user.first_name}!')
-                return redirect('dashboard')
+                return redirect('core:dashboard')
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
@@ -41,7 +41,7 @@ def user_logout(request):
 def user_register(request):
     """User registration view"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('core:dashboard')
     
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -49,7 +49,7 @@ def user_register(request):
             user = form.save()
             login(request, user)
             messages.success(request, f'Welcome {user.first_name}! Your account has been created successfully.')
-            return redirect('dashboard')
+            return redirect('core:dashboard')
     else:
         form = UserRegistrationForm()
     

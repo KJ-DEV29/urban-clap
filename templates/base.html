@@ -35,22 +35,29 @@
         <!-- Left section - Navigation links -->
         <ul class="nav-menu-items">
             <li><a href="{% url 'core:home' %}" {% if request.resolver_match.url_name == "home" %}class="active"{% endif %}>Home <br>Home</a></li>
-            <li><a href="{% url 'core:services' %}" {% if request.resolver_match.url_name == "services" %}class="active"{% endif %}>Services <br>Services</a></li>
-            <li><a href="{% url 'core:about' %}" {% if request.resolver_match.url_name == "about" %}class="active"{% endif %}>About <br>About</a></li>
-            <li><a href="{% url 'core:enquiry' %}" {% if request.resolver_match.url_name == "enquiry" %}class="active"{% endif %}>Enquiry <br>Enquiry</a></li>
-            <li><a href="{% url 'core:review' %}" {% if request.resolver_match.url_name == "review" %}class="active"{% endif %}>Reviews <br>Reviews</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'core:dashboard' %}" {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>Dashboard</a></li>
-            <li><a href="{% url 'core:donate_blood' %}" {% if request.resolver_match.url_name == "donate_blood" %}class="active"{% endif %}>Donate Blood</a></li>
-            <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == "purchase_blood" %}class="active"{% endif %}>Purchase Blood</a></li>
-            {% if user.is_staff %}
-            <li><a href="{% url 'core:admin_dashboard' %}" {% if request.resolver_match.url_name == "admin_dashboard" %}class="active"{% endif %}>Admin</a></li>
+            {% if not user.is_authenticated %}
+                <li><a href="{% url 'core:services' %}" {% if request.resolver_match.url_name == "services" %}class="active"{% endif %}>Services <br>Services</a></li>
+                <li><a href="{% url 'core:about' %}" {% if request.resolver_match.url_name == "about" %}class="active"{% endif %}>About <br>About</a></li>
             {% endif %}
+            <li><a href="{% url 'core:enquiry' %}" {% if request.resolver_match.url_name == "enquiry" %}class="active"{% endif %}>Enquiry <br>Enquiry</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'core:dashboard' %}" {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>Dashboard <br>Dashboard</a></li>
+                <li><a href="{% url 'core:donate_blood' %}" {% if request.resolver_match.url_name == "donate_blood" %}class="active"{% endif %}>Donate Blood <br>Donate Blood</a></li>
+                <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == "purchase_blood" %}class="active"{% endif %}>Purchase Blood <br>Purchase Blood   </a></li>
+                {% if user.is_staff %}
+                    <li><a href="{% url 'core:admin_dashboard' %}" {% if request.resolver_match.url_name == "admin_dashboard" %}class="active"{% endif %}>Admin Dashboard</a></li>
+                    <li><a href="{% url 'core:admin_enquiries' %}" {% if request.resolver_match.url_name == "admin_enquiries" %}class="active"{% endif %}>Admin Enquiries</a></li>
+                    <li><a href="{% url 'core:admin_reviews' %}" {% if request.resolver_match.url_name == "admin_reviews" %}class="active"{% endif %}>Admin Reviews</a></li>
+                    <li><a href="{% url 'core:admin_users' %}" {% if request.resolver_match.url_name == "admin_users" %}class="active"{% endif %}>Manage Users</a></li>
+                    <li><a href="{% url 'core:admin_blood_inventory' %}" {% if request.resolver_match.url_name == "admin_blood_inventory" %}class="active"{% endif %}>Blood Inventory</a></li>
+                    <li><a href="{% url 'core:admin_donations' %}" {% if request.resolver_match.url_name == "admin_donations" %}class="active"{% endif %}>Donations</a></li>
+                    <li><a href="{% url 'core:admin_purchases' %}" {% if request.resolver_match.url_name == "admin_purchases" %}class="active"{% endif %}>Purchases</a></li>
+                {% endif %}
             {% else %}
-            <div class="auth-links-container">
-                <li class="authlink"><a href="{% url 'auth:login' %}" {% if request.resolver_match.url_name == "login" %}class="active"{% endif %}>Login</a></li>
-                <li class="authlink"><a href="{% url 'auth:register' %}" {% if request.resolver_match.url_name == "register" %}class="active"{% endif %}>Register</a></li>
-            </div>
+                <div class="auth-links-container">
+                    <li class="authlink"><a href="{% url 'auth:login' %}" {% if request.resolver_match.url_name == "login" %}class="active"{% endif %}>Login</a></li>
+                    <li class="authlink"><a href="{% url 'auth:register' %}" {% if request.resolver_match.url_name == "register" %}class="active"{% endif %}>Register</a></li>
+                </div>
             {% endif %}
         </ul>
 

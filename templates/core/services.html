@@ -1,345 +1,789 @@
+<style>
+    /* Base Styles */
+   :root {
+    --primary-color: #ff0033;
+    --primary-dark: #cc0029;
+    --accent-color: #ffb3c6;
+    --background-dark: #18181b;
+    --background-darker: #101014;
+    --border-color: #23232b;
+    --card-glow: 0 2px 24px 0 rgba(255,0,51,0.08);
+    --text-light: #f8f9fa;
+    --text-muted: #bdbdbd;
+    --shadow-intensity: 0.6;
+    --radius: 14px;
+    --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Base Styles */
+  .container {
+    max-width: 1200px;
+    padding: 0 24px;
+    margin: 0 auto;
+  }
+
+  body {
+    background: linear-gradient(120deg, var(--background-darker) 0%, var(--background-dark) 100%);
+    color: var(--text-light);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+    letter-spacing: 0.01em;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+    color: var(--text-light);
+  }
+
+  .lead {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: 
+      linear-gradient(120deg, rgba(0,0,0,0.92) 60%, rgba(255,0,51,0.08) 100%),
+      url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 140px 30px 100px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25);
+  }
+
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 8px;
+    background: linear-gradient(90deg, transparent, var(--primary-color) 50%, transparent);
+    opacity: 0.85;
+    border-radius: 8px;
+    filter: blur(1px);
+  }
+
+  .hero-section h1 {
+    font-size: clamp(2.7rem, 6vw, 4rem);
+    text-shadow: 0 4px 24px rgba(255,0,51,0.12), 0 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 1.2rem;
+    letter-spacing: -2px;
+  }
+
+  /* Cards */
+  .card {
+    background: linear-gradient(120deg, var(--background-dark) 80%, var(--background-darker) 100%);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+    box-shadow: var(--card-glow);
+    overflow: hidden;
+    margin-bottom: 32px;
+    height: 100%;
+    position: relative;
+  }
+
+  .card:hover {
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 8px 32px 0 rgba(255,0,51,0.18), 0 2px 16px 0 rgba(0,0,0,0.18);
+    border-color: var(--primary-color);
+    z-index: 2;
+  }
+
+  .card-header {
+    background: linear-gradient(90deg, var(--background-darker) 80%, var(--primary-color) 120%);
+    border-bottom: 1px solid var(--border-color);
+    padding: 22px 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 0.5px;
+  }
+
+  .card-body {
+    padding: 36px 28px 28px 28px;
+  }
+
+  .card-title {
+    position: relative;
+    padding-bottom: 16px;
+    margin-bottom: 22px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
+  }
+
+  .card-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color) 60%, var(--accent-color) 100%);
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  /* Icons */
+  .icon, .card-body > i {
+    color: var(--primary-color);
+    transition: color var(--transition), transform var(--transition), filter var(--transition);
+    margin-bottom: 22px;
+    filter: drop-shadow(0 2px 8px rgba(255,0,51,0.10));
+    font-size: 2.5rem;
+  }
+
+  .card:hover .icon, .card:hover > .card-body > i {
+    transform: scale(1.13) rotate(-3deg);
+    filter: drop-shadow(0 0 16px rgba(255,0,51,0.25));
+    color: var(--accent-color);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 8px;
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    gap: 10px;
+    box-shadow: 0 2px 8px 0 rgba(255,0,51,0.08);
+    outline: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, var(--primary-color) 80%, var(--primary-dark) 100%);
+    color: #fff;
+    border: none;
+  }
+
+  .btn-primary:hover, .btn-primary:focus {
+    background: linear-gradient(90deg, var(--primary-dark) 80%, var(--primary-color) 100%);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(255,0,51,0.18);
+    color: #fff;
+  }
+
+  .btn-outline-light {
+    background: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+  }
+
+  .btn-outline-light:hover, .btn-outline-light:focus {
+    background: #fff;
+    color: var(--primary-color);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px rgba(255,0,51,0.10);
+  }
+
+  /* List Items */
+  .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .list-unstyled li {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    transition: background var(--transition);
+  }
+
+  .list-unstyled li:last-child {
+    border-bottom: none;
+  }
+
+  .list-unstyled i {
+    margin-right: 14px;
+    color: var(--primary-color);
+    font-size: 1.1em;
+    filter: drop-shadow(0 1px 4px rgba(255,0,51,0.10));
+  }
+
+  .list-unstyled li:hover {
+    background: rgba(255,0,51,0.03);
+    color: var(--primary-color);
+  }
+
+  /* Utility Classes */
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+
+  /* Section Styling */
+  .section {
+    padding: 90px 0;
+    background: linear-gradient(120deg, var(--background-dark) 80%, var(--background-darker) 100%);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+  }
+
+  .section-title {
+    position: relative;
+    padding-bottom: 18px;
+    margin-bottom: 48px;
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color) 60%, var(--accent-color) 100%);
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  /* Process Steps */
+  .process-step {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--background-dark) 60%, var(--background-darker) 100%);
+    border: 2.5px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.7rem;
+    font-weight: 800;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 2px 12px 0 rgba(255,0,51,0.08);
+  }
+
+  .process-step:hover {
+    background: var(--primary-color);
+    color: #fff;
+    transform: scale(1.08) rotate(-2deg);
+    box-shadow: 0 4px 24px 0 rgba(255,0,51,0.18);
+  }
+
+  /* Call to Action */
+  .cta-section {
+    background: linear-gradient(135deg, var(--background-darker) 0%, var(--background-dark) 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius);
+    padding: 64px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 70px 0;
+    box-shadow: 0 4px 32px 0 rgba(255,0,51,0.10);
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -40%;
+    width: 120%;
+    height: 180%;
+    background: radial-gradient(circle, rgba(255,0,51,0.13) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(2px);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 1200px) {
+    .container {
+      max-width: 1000px;
+    }
+    .section {
+      padding: 70px 0;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .hero-section {
+      padding: 100px 16px 80px 16px;
+    }
+    .section {
+      padding: 54px 0;
+    }
+    .card-body {
+      padding: 28px 16px 20px 16px;
+    }
+    .cta-section {
+      padding: 48px 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 70px 8px 50px 8px;
+    }
+    .hero-section h1 {
+      font-size: 2rem;
+    }
+    .lead {
+      font-size: 1.05rem;
+    }
+    .btn {
+      width: 100%;
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+    .cta-section {
+      padding: 32px 8px;
+    }
+    .section {
+      padding: 36px 0;
+    }
+    .card-title {
+      font-size: 1.1rem;
+    }
+    .process-step {
+      width: 64px;
+      height: 64px;
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .container {
+      padding: 0 4px;
+    }
+    .card-body {
+      padding: 14px 6px 10px 6px;
+    }
+    .process-step {
+      width: 48px;
+      height: 48px;
+      font-size: 0.95rem;
+    }
+    .section-title {
+      font-size: 1.3rem;
+    }
+    .cta-section {
+      padding: 18px 2px;
+    }
+  }
+</style>
+
 {% extends 'base.html' %}
 
 {% block title %}Services - Blood Bank Management System{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid px-0">
     <!-- Hero Section -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="hero-section">
-                <h1 class="display-4 fw-bold mb-4">Our Services</h1>
-                <p class="lead">Comprehensive blood bank services for donors and recipients</p>
-            </div>
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">OUR SERVICES</h1>
+            <p class="lead">Life-saving blood bank services with unmatched quality and care</p>
         </div>
     </div>
 
-    <!-- Main Services -->
-    <div class="row mb-5">
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-tint fa-3x text-danger mb-3"></i>
-                    <h4 class="card-title">Blood Donation</h4>
-                    <p class="card-text">
-                        Safe and convenient blood donation services with professional staff and modern equipment. 
-                        We make the donation process comfortable and rewarding for our donors.
-                    </p>
-                    <ul class="list-unstyled text-start">
-                        <li><i class="fas fa-check text-success me-2"></i>Professional phlebotomy staff</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Comfortable donation environment</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Post-donation refreshments</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Donation certificates</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Health screening included</li>
-                    </ul>
-                    <a href="{% url 'core:donate_blood' %}" class="btn btn-primary mt-3">
-                        <i class="fas fa-tint me-2"></i>Donate Blood
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-shopping-cart fa-3x text-danger mb-3"></i>
-                    <h4 class="card-title">Blood Purchase</h4>
-                    <p class="card-text">
-                        Purchase blood units for medical procedures with priority handling for emergency cases. 
-                        We ensure timely delivery and quality assurance.
-                    </p>
-                    <ul class="list-unstyled text-start">
-                        <li><i class="fas fa-check text-success me-2"></i>All blood types available</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Emergency priority service</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Quality testing included</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Flexible delivery options</li>
-                        <li><i class="fas fa-check text-success me-2"></i>24/7 availability</li>
-                    </ul>
-                    <a href="{% url 'core:purchase_blood' %}" class="btn btn-primary mt-3">
-                        <i class="fas fa-shopping-cart me-2"></i>Purchase Blood
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Additional Services -->
-    <div class="row mb-5">
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100">
-                <div class="card-body">
-                    <i class="fas fa-ambulance fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Emergency Services</h5>
-                    <p class="card-text">
-                        24/7 emergency blood supply services for hospitals and medical facilities. 
-                        Rapid response for critical situations.
-                    </p>
-                    <ul class="list-unstyled text-start small">
-                        <li><i class="fas fa-clock text-warning me-2"></i>24/7 availability</li>
-                        <li><i class="fas fa-phone text-warning me-2"></i>Emergency hotline</li>
-                        <li><i class="fas fa-truck text-warning me-2"></i>Rapid delivery</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100">
-                <div class="card-body">
-                    <i class="fas fa-microscope fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Blood Testing</h5>
-                    <p class="card-text">
-                        Comprehensive blood testing services including compatibility testing, 
-                        disease screening, and quality assurance.
-                    </p>
-                    <ul class="list-unstyled text-start small">
-                        <li><i class="fas fa-vial text-warning me-2"></i>Compatibility testing</li>
-                        <li><i class="fas fa-shield-alt text-warning me-2"></i>Disease screening</li>
-                        <li><i class="fas fa-certificate text-warning me-2"></i>Quality assurance</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100">
-                <div class="card-body">
-                    <i class="fas fa-chart-line fa-2x text-danger mb-3"></i>
-                    <h5 class="card-title">Inventory Management</h5>
-                    <p class="card-text">
-                        Advanced inventory management system to track blood supply levels 
-                        and ensure optimal stock management.
-                    </p>
-                    <ul class="list-unstyled text-start small">
-                        <li><i class="fas fa-database text-warning me-2"></i>Real-time tracking</li>
-                        <li><i class="fas fa-bell text-warning me-2"></i>Low stock alerts</li>
-                        <li><i class="fas fa-chart-bar text-warning me-2"></i>Analytics & reporting</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Blood Types Information -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-info-circle me-2"></i>Blood Types We Handle
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">A+</h5>
-                                <p class="small mb-2">Can donate to: A+, AB+</p>
-                                <p class="small mb-0">Can receive from: A+, A-, O+, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">A-</h5>
-                                <p class="small mb-2">Can donate to: A+, A-, AB+, AB-</p>
-                                <p class="small mb-0">Can receive from: A-, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">B+</h5>
-                                <p class="small mb-2">Can donate to: B+, AB+</p>
-                                <p class="small mb-0">Can receive from: B+, B-, O+, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">B-</h5>
-                                <p class="small mb-2">Can donate to: B+, B-, AB+, AB-</p>
-                                <p class="small mb-0">Can receive from: B-, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">AB+</h5>
-                                <p class="small mb-2">Can donate to: AB+</p>
-                                <p class="small mb-0">Can receive from: All blood types</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">AB-</h5>
-                                <p class="small mb-2">Can donate to: AB+, AB-</p>
-                                <p class="small mb-0">Can receive from: A-, B-, AB-, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">O+</h5>
-                                <p class="small mb-2">Can donate to: A+, B+, AB+, O+</p>
-                                <p class="small mb-0">Can receive from: O+, O-</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="blood-type-card text-center">
-                                <h5 class="text-danger">O-</h5>
-                                <p class="small mb-2">Can donate to: All blood types</p>
-                                <p class="small mb-0">Can receive from: O-</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Donation Process -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-list-ol me-2"></i>Blood Donation Process
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-4">
-                            <div class="text-center">
-                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                    <span class="text-white fw-bold">1</span>
-                                </div>
-                                <h6>Registration</h6>
-                                <p class="small text-muted">
-                                    Complete registration form and provide identification documents.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="text-center">
-                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                    <span class="text-white fw-bold">2</span>
-                                </div>
-                                <h6>Health Screening</h6>
-                                <p class="small text-muted">
-                                    Medical history review, physical examination, and hemoglobin test.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="text-center">
-                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                    <span class="text-white fw-bold">3</span>
-                                </div>
-                                <h6>Blood Collection</h6>
-                                <p class="small text-muted">
-                                    Safe and sterile blood collection process (10-15 minutes).
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="text-center">
-                                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                    <span class="text-white fw-bold">4</span>
-                                </div>
-                                <h6>Recovery</h6>
-                                <p class="small text-muted">
-                                    Rest period with refreshments and post-donation care instructions.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pricing Information -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-dollar-sign me-2"></i>Service Pricing
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card text-center">
-                                <div class="card-header bg-success text-white">
-                                    <h5 class="mb-0">Standard</h5>
-                                </div>
-                                <div class="card-body">
-                                    <h3 class="text-success">$100</h3>
-                                    <p class="text-muted">per unit</p>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check text-success me-2"></i>Standard processing time</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Quality testing included</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Basic delivery</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card text-center">
-                                <div class="card-header bg-warning text-white">
-                                    <h5 class="mb-0">Urgent</h5>
-                                </div>
-                                <div class="card-body">
-                                    <h3 class="text-warning">$150</h3>
-                                    <p class="text-muted">per unit</p>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check text-success me-2"></i>Priority processing</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Express delivery</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>24/7 support</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card text-center">
-                                <div class="card-header bg-danger text-white">
-                                    <h5 class="mb-0">Emergency</h5>
-                                </div>
-                                <div class="card-body">
-                                    <h3 class="text-danger">$200</h3>
-                                    <p class="text-muted">per unit</p>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check text-success me-2"></i>Immediate processing</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Emergency delivery</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Dedicated support</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Call to Action -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-danger text-white">
-                <div class="card-body text-center">
-                    <h3 class="mb-3">Ready to Use Our Services?</h3>
-                    <p class="lead mb-4">
-                        Whether you want to donate blood or need blood for medical procedures, 
-                        we're here to help you.
-                    </p>
-                    <div class="d-flex gap-3 justify-content-center">
-                        <a href="{% url 'core:donate_blood' %}" class="btn btn-light btn-lg">
-                            <i class="fas fa-tint me-2"></i>Donate Blood
+    <div class="container py-5">
+        <!-- Main Services -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tint fa-3x mb-4"></i>
+                        <h4 class="card-title">BLOOD DONATION</h4>
+                        <p class="card-text mb-4">
+                            Experience our premium donation process with expert care and state-of-the-art facilities.
+                            Your donation makes a difference.
+                        </p>
+                        <ul class="list-unstyled text-start mb-4">
+                            <li><i class="fas fa-check text-success me-2"></i>Certified phlebotomists</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Luxurious donation suites</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Gourmet refreshments</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Premium donor recognition</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Comprehensive health screening</li>
+                        </ul>
+                        <a href="{% url 'core:donate_blood' %}" class="btn btn-primary">
+                            <i class="fas fa-tint me-2"></i>BECOME A DONOR
                         </a>
-                        <a href="{% url 'core:purchase_blood' %}" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-shopping-cart me-2"></i>Purchase Blood
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shopping-cart fa-3x mb-4"></i>
+                        <h4 class="card-title">BLOOD PROCUREMENT</h4>
+                        <p class="card-text mb-4">
+                            Premium blood supply services with guaranteed quality and rapid delivery for medical
+                            facilities.
+                        </p>
+                        <ul class="list-unstyled text-start mb-4">
+                            <li><i class="fas fa-check text-success me-2"></i>All blood types in stock</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Emergency response team</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Advanced testing protocols</li>
+                            <li><i class="fas fa-check text-success me-2"></i>White-glove delivery service</li>
+                            <li><i class="fas fa-check text-success me-2"></i>24/7 concierge support</li>
+                        </ul>
+                        <a href="{% url 'core:purchase_blood' %}" class="btn btn-primary">
+                            <i class="fas fa-shopping-cart me-2"></i>REQUEST BLOOD
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Additional Services -->
+        <div class="row mb-5">
+            <div class="col-12 mb-5">
+                <h2 class="text-center mb-5">PREMIUM SERVICES</h2>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-ambulance fa-2x mb-4"></i>
+                        <h5 class="card-title">CRITICAL CARE DELIVERY</h5>
+                        <p class="card-text mb-4">
+                            Our elite emergency response team delivers life-saving blood when seconds count.
+                        </p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="fas fa-bolt text-warning me-2"></i>Immediate dispatch</li>
+                            <li><i class="fas fa-headset text-warning me-2"></i>Dedicated crisis team</li>
+                            <li><i class="fas fa-helicopter text-warning me-2"></i>Air delivery options</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-microscope fa-2x mb-4"></i>
+                        <h5 class="card-title">ADVANCED TESTING</h5>
+                        <p class="card-text mb-4">
+                            Cutting-edge blood analysis using the latest medical technology.
+                        </p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="fas fa-dna text-warning me-2"></i>Genetic compatibility</li>
+                            <li><i class="fas fa-shield-virus text-warning me-2"></i>Pathogen screening</li>
+                            <li><i class="fas fa-certificate text-warning me-2"></i>ISO-certified labs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-2x mb-4"></i>
+                        <h5 class="card-title">INTELLIGENT INVENTORY</h5>
+                        <p class="card-text mb-4">
+                            AI-powered blood supply management with predictive analytics.
+                        </p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="fas fa-robot text-warning me-2"></i>Smart forecasting</li>
+                            <li><i class="fas fa-map-marked-alt text-warning me-2"></i>Geo-distribution</li>
+                            <li><i class="fas fa-chart-pie text-warning me-2"></i>Real-time dashboards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Blood Types Information -->
+        <div class="row mb-5">
+            <div class="col-12 mb-5">
+                <h2 class="text-center mb-5">BLOOD TYPE MATRIX</h2>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>COMPATIBILITY GUIDE
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>A+</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> A+, AB+</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> A+, A-, O+, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>A-</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> A+, A-, AB+, AB-</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> A-, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>B+</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> B+, AB+</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> B+, B-, O+, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>B-</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> B+, B-, AB+, AB-</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> B-, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>AB+</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> AB+</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> All types</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>AB-</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> AB+, AB-</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> A-, B-, AB-, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>O+</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> A+, B+, AB+, O+</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> O+, O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="blood-type-card text-center">
+                                    <h5>O-</h5>
+                                    <div class="mt-4">
+                                        <p class="small mb-2"><strong>Donates To:</strong> All types</p>
+                                        <p class="small mb-0"><strong>Receives From:</strong> O-</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Donation Process -->
+        <div class="row mb-5">
+            <div class="col-12 mb-5">
+                <h2 class="text-center mb-5">DONATION JOURNEY</h2>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-list-ol me-2"></i>THE DONATION PROCESS
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <div class="text-center">
+                                    <div
+                                        class="rounded-circle d-flex align-items-center justify-content-center process-step">
+                                        <span>1</span>
+                                    </div>
+                                    <h6>REGISTRATION</h6>
+                                    <p class="small mt-3" style="color: #6c757d;">
+                                        Digital check-in with biometric verification for premium experience.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="text-center">
+                                    <div
+                                        class="rounded-circle d-flex align-items-center justify-content-center process-step">
+                                        <span>2</span>
+                                    </div>
+                                    <h6>SCREENING</h6>
+                                    <p class="small mt-3" style="color: #6c757d;">
+                                        Comprehensive health evaluation with confidential consultation.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="text-center">
+                                    <div
+                                        class="rounded-circle d-flex align-items-center justify-content-center process-step">
+                                        <span>3</span>
+                                    </div>
+                                    <h6>DONATION</h6>
+                                    <p class="small mt-3" style="color: #6c757d;">
+                                        Painless collection in our luxury donor suites with entertainment.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="text-center">
+                                    <div
+                                        class="rounded-circle d-flex align-items-center justify-content-center process-step">
+                                        <span>4</span>
+                                    </div>
+                                    <h6>RECOVERY</h6>
+                                    <p class="small mt-3" style="color: #6c757d;">
+                                        VIP lounge with gourmet refreshments and wellness monitoring.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Pricing Information -->
+        <div class="row mb-5">
+            <div class="col-12 mb-5">
+                <h2 class="text-center mb-5">SERVICE TIERS</h2>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-dollar-sign me-2"></i>PRICING STRUCTURE
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="card pricing-card">
+                                    <div class="pricing-header text-white" style="background-color: #000;">
+                                        <h5 class="mb-0">STANDARD</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="mb-3" style="color: #28a745;">$100</h3>
+                                        <p style="color: #6c757d;">per unit</p>
+                                        <ul class="list-unstyled mt-4">
+                                            <li><i class="fas fa-check text-success me-2"></i>4-hour processing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Standard testing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Next-day delivery</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Email support</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card pricing-card">
+                                    <div class="pricing-header text-white" style="background-color: #000;">
+                                        <h5 class="mb-0">PRIORITY</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="mb-3" style="color: #ffc107;">$150</h3>
+                                        <p style="color: #6c757d;">per unit</p>
+                                        <ul class="list-unstyled mt-4">
+                                            <li><i class="fas fa-check text-success me-2"></i>2-hour processing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Advanced testing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Same-day delivery</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Phone support</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card pricing-card">
+                                    <div class="pricing-header text-white" style="background-color: #000;">
+                                        <h5 class="mb-0">CRITICAL</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="mb-3" style="color: #dc3545;">$200</h3>
+                                        <p style="color: #6c757d;">per unit</p>
+                                        <ul class="list-unstyled mt-4">
+                                            <li><i class="fas fa-check text-success me-2"></i>Immediate processing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Premium testing</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Emergency courier</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Dedicated specialist</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card text-white cta-section">
+                    <div class="card-body text-center py-5">
+                        <h3 class="mb-4">READY TO SAVE LIVES?</h3>
+                        <p class="lead mb-5">
+                            Join our elite network of donors or access our premium blood supply services today.
+                        </p>
+                        <div class="d-flex gap-4 justify-content-center">
+                            <a href="{% url 'core:donate_blood' %}" class="btn btn-light btn-lg px-5">
+                                <i class="fas fa-tint me-2"></i>DONATE NOW
+                            </a>
+                            <a href="{% url 'core:purchase_blood' %}" class="btn btn-outline-light btn-lg px-5">
+                                <i class="fas fa-shopping-cart me-2"></i>ORDER BLOOD
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %} 
+
+
+<script src="../../static/js/about.js"></script>
+{% endblock %}

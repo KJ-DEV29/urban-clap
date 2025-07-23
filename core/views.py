@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db.models import Count, Sum
 from .models import Contact, Enquiry, Review, UserProfile, BloodPurchase
@@ -57,7 +58,7 @@ def contact(request):
         )
         
         messages.success(request, 'Your message has been sent successfully! We will get back to you soon.')
-        return redirect('contact')
+        return redirect('core:contact')
     
     return render(request, 'core/contact.html')
 
@@ -81,7 +82,7 @@ def enquiry(request):
         )
         
         messages.success(request, 'Your enquiry has been submitted successfully! We will respond soon.')
-        return redirect('enquiry')
+        return redirect('core:enquiry')
     
     return render(request, 'core/enquiry.html')
 
@@ -101,10 +102,10 @@ def review(request):
             )
             
             messages.success(request, 'Your review has been submitted successfully! It will be visible after approval.')
-            return redirect('review')
+            return redirect('core:review')
     else:
         messages.warning(request, 'Please login to submit a review.')
-        return redirect('user_login')
+        return redirect('auth_app:login')  # Assuming your login URL is named 'login' in auth_app
     
     # Get approved reviews
     approved_reviews = Review.objects.filter(is_approved=True).order_by('-created_at')
@@ -152,7 +153,6 @@ def dashboard(request):
 def donate_blood(request):
     """Donate blood view"""
     if request.method == 'POST':
-        # Handle blood donation request
         blood_bank_id = request.POST.get('blood_bank')
         donation_date = request.POST.get('donation_date')
         donation_time = request.POST.get('donation_time')
@@ -166,10 +166,10 @@ def donate_blood(request):
                 donor = Donor.objects.get(user=request.user)
             except Donor.DoesNotExist:
                 messages.error(request, 'You need to register as a donor first.')
-                return redirect('donor_register')
+                return redirect('donors:register')  # Assuming donor registration is in donors app
             
             # Create donation
-            donation = Donation.objects.create(
+            Donation.objects.create(
                 donor=donor,
                 blood_bank=blood_bank,
                 donation_date=donation_date,
@@ -179,7 +179,7 @@ def donate_blood(request):
             )
             
             messages.success(request, 'Blood donation scheduled successfully!')
-            return redirect('dashboard')
+            return redirect('core:dashboard')
             
         except BloodBank.DoesNotExist:
             messages.error(request, 'Invalid blood bank selected.')
@@ -195,14 +195,14 @@ def purchase_blood(request):
     """Purchase blood view"""
     if request.method == 'POST':
         blood_type = request.POST.get('blood_type')
-        units_needed = request.POST.get('units_needed')
+        units_needed = int(request.POST.get('units_needed'))
         purpose = request.POST.get('purpose')
         hospital_name = request.POST.get('hospital_name')
         doctor_name = request.POST.get('doctor_name', '')
         patient_name = request.POST.get('patient_name', '')
         urgency_level = request.POST.get('urgency_level')
         
-        # Set price based on blood type and urgency
+        # Price calculation
         base_price = 100.00  # Base price per unit
         urgency_multiplier = {
             'normal': 1.0,
@@ -211,6 +211,7 @@ def purchase_blood(request):
         }
         
         price_per_unit = base_price * urgency_multiplier.get(urgency_level, 1.0)
+        total_price = price_per_unit * units_needed
         
         BloodPurchase.objects.create(
             user=request.user,
@@ -221,21 +222,18 @@ def purchase_blood(request):
             doctor_name=doctor_name,
             patient_name=patient_name,
             urgency_level=urgency_level,
-            price_per_unit=price_per_unit
+            price_per_unit=price_per_unit,
+            total_price=total_price
         )
         
-        messages.success(request, 'Blood purchase request submitted successfully! We will contact you soon.')
-        return redirect('dashboard')
+        messages.success(request, f'Blood purchase request submitted successfully! Total cost: ${total_price:.2f}')
+        return redirect('core:dashboard')
     
-    return render(request, 'core/purchase_blood.html', context)
+    return render(request, 'core/purchase_blood.html')
 
-@login_required
+@staff_member_required
 def admin_dashboard(request):
     """Admin dashboard view"""
-    if not request.user.is_staff:
-        messages.error(request, 'Access denied. Admin privileges required.')
-        return redirect('dashboard')
-    
     # Get statistics for admin dashboard
     total_donors = Donor.objects.count()
     total_donations = Donation.objects.count()

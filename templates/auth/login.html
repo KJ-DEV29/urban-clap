@@ -1,82 +1,398 @@
+<style>
+    /* Base Styles */
+    body {
+        background-color: #000;
+        color: #f8f9fa;
+        font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        align-items: center;
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+            url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .container {
+        max-width: 1200px;
+        
+    }
+
+    /* Login Card */
+    .login-card {
+        background-color: rgba(17, 17, 17, 0.95);
+        border: none;
+        border-radius: 0;
+        box-shadow: 0 15px 50px rgba(255, 0, 51, 0.2);
+        overflow: hidden;
+        border-left: 5px solid #ff0033;
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        backdrop-filter: blur(10px);
+    }
+
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(255, 0, 51, 0.3);
+    }
+
+    .card-header {
+        background-color: rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #1a1a1a;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    .card-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #ff0033, transparent);
+    }
+
+    .card-header h4 {
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0;
+        color: white;
+    }
+
+    .card-header i {
+        color: #ff0033;
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 40px;
+    }
+
+    /* Form Elements */
+    .form-label {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        display: block;
+        color: #ddd;
+    }
+
+    .form-label i {
+        color: #ff0033;
+        margin-right: 10px;
+    }
+
+    .form-control {
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #1a1a1a;
+        border-radius: 0;
+        color: white;
+        padding: 15px;
+        height: auto;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-color: #ff0033;
+        box-shadow: 0 0 0 0.25rem rgba(255, 0, 51, 0.25);
+        color: white;
+    }
+
+    /* Buttons */
+    .btn {
+        font-weight: 700;
+        padding: 15px 30px;
+        border-radius: 0;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-primary {
+        background-color: #ff0033;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #cc0029;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 0, 51, 0.3);
+    }
+
+    .btn-outline-primary {
+        background-color: transparent;
+        border: 2px solid #ff0033;
+        color: #ff0033;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #ff0033;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 0, 51, 0.3);
+    }
+
+    /* Divider */
+    .divider {
+        border-top: 1px solid #1a1a1a;
+        position: relative;
+        margin: 30px 0;
+    }
+
+    .divider::after {
+        content: 'OR';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #111;
+        padding: 0 15px;
+        color: #777;
+        font-size: 0.8rem;
+    }
+
+    /* Info Card */
+    .info-card {
+        background-color: rgba(17, 17, 17, 0.8);
+        border: none;
+        border-radius: 0;
+        margin-top: 30px;
+        border-left: 5px solid #1a1a1a;
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        border-left-color: #ff0033;
+    }
+
+    .info-card .card-title {
+        color: #ff0033;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .info-card .list-unstyled li {
+        padding: 10px 0;
+        border-bottom: 1px dashed #1a1a1a;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-card .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+
+    .info-card i {
+        color: #ff0033;
+        margin-right: 10px;
+    }
+
+    /* Error Messages */
+    .invalid-feedback {
+        color: #ff6b6b;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 30px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .card-header {
+            padding: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+    }
+</style>
+
 {% extends 'base.html' %}
 
-{% block title %}Login - Blood Bank Management System{% endblock %}
+{% block title %}Secure Login - Blood Bank Management System{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-lg">
-                <div class="card-header text-center">
-                    <h4 class="mb-0">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login
-                    </h4>
+        <div class="col-md-8 col-lg-6">
+            <!-- Main Login Card -->
+            <div class="card login-card">
+                <div class="card-header">
+                    <h4><i class="fas fa-fingerprint"></i> SECURE ACCESS PORTAL</h4>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body">
                     <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
-                        
-                        <div class="mb-3">
+
+                        <!-- Username Field -->
+                        <div class="mb-4">
                             <label for="{{ form.username.id_for_label }}" class="form-label">
-                                <i class="fas fa-user me-2"></i>Username
+                                <i class="fas fa-user-shield"></i> USERNAME
                             </label>
-                            {{ form.username }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-black border-end-0">
+                                    <i class="fas fa-user text-danger"></i>
+                                </span>
+                                {{ form.username }}
+                            </div>
                             {% if form.username.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {% for error in form.username.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.username.errors %}
+                                <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                {% endfor %}
+                            </div>
                             {% endif %}
                         </div>
 
-                        <div class="mb-3">
+                        <!-- Password Field -->
+                        <div class="mb-4">
                             <label for="{{ form.password.id_for_label }}" class="form-label">
-                                <i class="fas fa-lock me-2"></i>Password
+                                <i class="fas fa-key"></i> PASSWORD
                             </label>
-                            {{ form.password }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-black border-end-0">
+                                    <i class="fas fa-lock text-danger"></i>
+                                </span>
+                                {{ form.password }}
+                                <button class="btn btn-outline-secondary bg-black border-start-0" type="button"
+                                    id="togglePassword">
+                                    <i class="fas fa-eye text-danger"></i>
+                                </button>
+                            </div>
                             {% if form.password.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {% for error in form.password.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password.errors %}
+                                <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                                {% endfor %}
+                            </div>
                             {% endif %}
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div style="margin: 20px 0px;" class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label small" for="rememberMe">
+                                    Remember this device
+                                </label>
+                            </div>
+                            <!-- Fix: Remove broken reverse URL for password_reset -->
+                            <a href="/auth/password-reset/" class="small text-danger">
+                                <i class="fas fa-question-circle me-1"></i>Forgot Password?
+                            </a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div style="margin-top: 20px;" class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary py-3">
+                                <i class="fas fa-sign-in-alt me-2"></i> AUTHENTICATE
                             </button>
                         </div>
+
+                        <!-- Divider -->
+                        <div class="divider"></div>
+
+                        <!-- Registration Prompt -->
+                        <div class="text-center">
+                            <p style="margin-bottom: 50px;" class="mb-3">NOT REGISTERED YET?</p>
+                            <a style="margin-top: 20px" href="{% url 'auth:register' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i> CREATE ACCOUNT
+                            </a>
+                        </div>
                     </form>
-
-                    <hr class="my-4">
-
-                    <div class="text-center">
-                        <p class="mb-2">Don't have an account?</p>
-                        <a href="{% url 'auth:register' %}" class="btn btn-outline-primary">
-                            <i class="fas fa-user-plus me-2"></i>Register Now
-                        </a>
-                    </div>
                 </div>
             </div>
 
-            <!-- Additional Info -->
-            <div class="card mt-4">
+            <!-- Benefits Card -->
+            <div class="card info-card">
                 <div class="card-body text-center">
                     <h6 class="card-title">
-                        <i class="fas fa-info-circle me-2"></i>Why Register?
+                        <i class="fas fa-star"></i> BENEFITS OF REGISTRATION
                     </h6>
-                    <ul class="list-unstyled mb-0">
-                        <li><i class="fas fa-check text-success me-2"></i>Track your donation history</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Schedule blood donations</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Purchase blood when needed</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Get notifications and updates</li>
+                    <ul class="list-unstyled text-start">
+                        <li>
+                            <i class="fas fa-chart-line"></i> Track donation history & health metrics
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-alt"></i> Schedule donations with our mobile units
+                        </li>
+                        <li>
+                            <i class="fas fa-bell"></i> Receive critical shortage alerts
+                        </li>
+                        <li>
+                            <i class="fas fa-shield-alt"></i> Priority access during emergencies
+                        </li>
+                        <li>
+                            <i class="fas fa-award"></i> Earn rewards in our donor program
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %} 
+
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+        const icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Add animation to form inputs on focus
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function () {
+            this.parentElement.querySelector('.input-group-text').style.borderColor = '#ff0033';
+        });
+
+        input.addEventListener('blur', function () {
+            this.parentElement.querySelector('.input-group-text').style.borderColor = '';
+        });
+    });
+</script>
+{% endblock %}

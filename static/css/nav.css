@@ -148,7 +148,7 @@ nav {
 }
 
 .nav-menu-items li:hover::before {
-    transform: translateX(100%);
+    transform: translateX(110%);
 }
 
 /* Auth links container */
