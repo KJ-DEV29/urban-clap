@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from datetime import date
 
 class Donor(models.Model):
     BLOOD_TYPES = [
@@ -38,6 +39,7 @@ class Donor(models.Model):
     zip_code = models.CharField(max_length=10)
     is_eligible = models.BooleanField(default=True)
     last_donation_date = models.DateField(null=True, blank=True)
+    donation_date = models.DateField(null=True, blank=True, default=date.today)
     total_donations = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,6 +56,5 @@ class Donor(models.Model):
     
     @property
     def age(self):
-        from datetime import date
         today = date.today()
         return today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))

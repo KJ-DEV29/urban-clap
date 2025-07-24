@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 {% block title %}Purchase Blood | Blood Bank{% endblock %}
 
 {% block content %}
@@ -174,7 +174,7 @@
         </div>
         <div class="form-group">
             <label for="hospital">Hospital / Clinic Name <span class="required">*</span></label>
-            <input type="text" id="hospital" name="hospital" required value="{{ request.POST.hospital }}">
+            <input type="text" id="hospital" name="hospital_name" required value="{{ request.POST.hospital }}">
             <div class="invalid-feedback">Please enter the hospital or clinic name.</div>
         </div>
         <div class="form-group">
@@ -183,9 +183,32 @@
             <div class="invalid-feedback">Please enter the patient's name.</div>
         </div>
         <div class="form-group">
+            <label for="purpose">Purpose of Blood Transfusion <span class="required">*</span></label>
+            <input type="text" id="purpose" name="purpose" required value="{{ request.POST.purpose }}">
+            <div class="invalid-feedback">Please enter the purpose of blood transfusion.</div>
+        </div>
+        <div class="form-group">
             <label for="notes">Additional Notes</label>
             <textarea id="notes" name="notes" rows="3">{{ request.POST.notes }}</textarea>
         </div>
+        <div class="form-group">
+            <label for="urgency_level">Urgency Level <span class="required">*</span></label>
+            <select id="urgency_level" name="urgency_level" required>
+                <option value="normal" {% if request.POST.urgency_level == "normal" %}selected{% endif %}>Normal</option>
+                <option value="urgent" {% if request.POST.urgency_level == "urgent" %}selected{% endif %}>Urgent</option>
+                <option value="emergency" {% if request.POST.urgency_level == "emergency" %}selected{% endif %}>Emergency</option>
+            </select>
+            <div class="invalid-feedback">Please select the urgency level.</div>
+        </div>
+        <!--
+        The following field is commented out because the database does not have a total_amount column.
+        If you add a total_amount field to your model and database, you can uncomment and use this.
+        <div class="form-group">
+            <label for="total_amount">Total Amount (₹)</label>
+            <input type="number" id="total_amount" name="total_amount" min="0" step="0.01" value="{{ request.POST.total_amount }}">
+            <div class="invalid-feedback">Please enter a valid amount.</div>
+        </div>
+        -->
         <button type="submit" class="submit-btn">Request Blood</button>
     </form>
     <div class="purchase-messages">
@@ -249,4 +272,8 @@ If you do not have a backend for this, you need to:
     - Add URL mapping.
     - Create a model for blood purchase requests.
     - Handle form validation and messages.
+
+IMPORTANT: In your Django view, make sure to use request.POST.get('units') (not 'units_needed') to retrieve the number of units from the form, as the input field is named "units".
+
+NOTE: If you see errors related to a missing 'total_amount' field, ensure your database and model are in sync. If you do not need a total_amount field, do not add it to the form or model.
 -->

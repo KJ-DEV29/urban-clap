@@ -1,8 +1,10 @@
-    {% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Dashboard - Blood Bank Management System{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 <style>
     :root {
         --primary: #e63946;
@@ -20,15 +22,9 @@
     }
 
     body {
-        background-color:#000;
+        background-color: #000;
         color: var(--text-primary);
         font-family: 'Segoe UI', Roboto, sans-serif;
-    }
-
-    .profile-avatar{
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .dashboard-header {
@@ -52,9 +48,11 @@
     .dashboard-header h1 i {
         color: var(--primary);
     }
-.mb-4{
-    margin-bottom: 20px;
-}
+
+    .mb-4 {
+        margin-bottom: 20px;
+    }
+
     .profile-card {
         background: var(--card-bg);
         border-radius: 12px;
@@ -86,11 +84,24 @@
         align-items: center;
     }
 
-    .profile-avatar {
+    .profile-avatar-img {
         width: 100px;
         height: 100px;
         border-radius: 50%;
         object-fit: cover;
+        border: 3px solid var(--primary);
+        box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+        display: block;
+    }
+
+    .profile-avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 3px solid var(--primary);
         box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
     }
@@ -128,6 +139,16 @@
         background-color: rgba(76, 175, 80, 0.2);
         color: var(--success);
         border: 1px solid var(--success);
+    }
+
+    .status-badge.completed {
+        background-color: rgba(76, 175, 80, 0.15);
+        color: var(--success);
+        border: 1px solid var(--success);
+    }
+
+    .status-badge.pending {
+        background-color: rgba(33, 150, 243, 0.15);
     }
 
     .data-card {
@@ -263,11 +284,11 @@
                 <div class="card-body">
                     <div class="profile-info">
                         {% if profile.profile_picture %}
-                        <img src="{{ profile.profile_picture.url }}" class="profile-avatar" alt="Profile Picture">
+                            <img src="{{ profile.profile_picture.url }}" class="profile-avatar-img" alt="Profile Picture">
                         {% else %}
-                        <div class="profile-avatar d-flex align-items-center justify-content-center bg-secondary">
-                            <i class="fas fa-user fa-2x text-white"></i>
-                        </div>
+                            <div class="profile-avatar-placeholder">
+                                <i class="fas fa-user fa-2x text-white"></i>
+                            </div>
                         {% endif %}
                         <div class="profile-details">
                             <div class="detail-item">
@@ -290,14 +311,14 @@
                                 <span class="detail-label">Donor Status</span>
                                 <div>
                                     {% if profile.is_donor %}
-                                    <span class="status-badge registered">
-                                        <i class="fas fa-check-circle me-1"></i>
-                                        Registered Donor
-                                    </span>
+                                        <span class="status-badge registered">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Registered Donor
+                                        </span>
                                     {% else %}
-                                    <span class="status-badge">
-                                        Not Registered
-                                    </span>
+                                        <span class="status-badge">
+                                            Not Registered
+                                        </span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -321,23 +342,23 @@
                         </div>
                         <div class="card-body">
                             {% if user_donations %}
-                            <!-- Donation table would go here -->
+                                <!-- Donation table would go here -->
                             {% else %}
-                            <div class="empty-state">
-                                <i class="fas fa-heartbeat"></i>
-                                <p>No donation history available</p>
-                                {% if not profile.is_donor %}
-                                <a href="{% url 'donors:donor_register' %}" class="btn-action">
-                                    <i class="fas fa-user-plus"></i>
-                                    Register as Donor
-                                </a>
-                                {% else %}
-                                <a href="{% url 'core:donate_blood' %}" class="btn-action">
-                                    <i class="fas fa-tint"></i>
-                                    Schedule Donation
-                                </a>
-                                {% endif %}
-                            </div>
+                                <div class="empty-state">
+                                    <i class="fas fa-heartbeat"></i>
+                                    <p>No donation history available</p>
+                                    {% if not profile.is_donor %}
+                                        <a href="{% url 'donors:donor_register' %}" class="btn-action">
+                                            <i class="fas fa-user-plus"></i>
+                                            Register as Donor
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'core:donate_blood' %}" class="btn-action">
+                                            <i class="fas fa-tint"></i>
+                                            Schedule Donation
+                                        </a>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -354,16 +375,16 @@
                         </div>
                         <div class="card-body">
                             {% if user_purchases %}
-                            <!-- Purchase table would go here -->
+                                <!-- Purchase table would go here -->
                             {% else %}
-                            <div class="empty-state">
-                                <i class="fas fa-shopping-cart"></i>
-                                <p>No blood purchase history</p>
-                                <a href="{% url 'core:purchase_blood' %}" class="btn-action">
-                                    <i class="fas fa-ambulance"></i>
-                                    Request Blood
-                                </a>
-                            </div>
+                                <div class="empty-state">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <p>No blood purchase history</p>
+                                    <a href="{% url 'core:purchase_blood' %}" class="btn-action">
+                                        <i class="fas fa-ambulance"></i>
+                                        Request Blood
+                                    </a>
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -380,16 +401,16 @@
                         </div>
                         <div class="card-body">
                             {% if user_reviews %}
-                            <!-- Reviews would go here -->
+                                <!-- Reviews would go here -->
                             {% else %}
-                            <div class="empty-state">
-                                <i class="fas fa-star"></i>
-                                <p>No reviews submitted yet</p>
-                                <a href="{% url 'core:review' %}" class="btn-action">
-                                    <i class="fas fa-pen"></i>
-                                    Write a Review
-                                </a>
-                            </div>
+                                <div class="empty-state">
+                                    <i class="fas fa-star"></i>
+                                    <p>No reviews submitted yet</p>
+                                    <a href="{% url 'core:review' %}" class="btn-action">
+                                        <i class="fas fa-pen"></i>
+                                        Write a Review
+                                    </a>
+                                </div>
                             {% endif %}
                         </div>
                     </div>

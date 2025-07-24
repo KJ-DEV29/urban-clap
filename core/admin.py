@@ -8,12 +8,12 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email', 'subject', 'message']
     readonly_fields = ['created_at']
     actions = ['mark_as_read', 'mark_as_unread']
-    
+
     def mark_as_read(self, request, queryset):
         updated = queryset.update(is_read=True)
         self.message_user(request, f'{updated} contact(s) marked as read.')
     mark_as_read.short_description = "Mark selected contacts as read"
-    
+
     def mark_as_unread(self, request, queryset):
         updated = queryset.update(is_read=False)
         self.message_user(request, f'{updated} contact(s) marked as unread.')
@@ -26,7 +26,7 @@ class EnquiryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email', 'subject', 'message']
     readonly_fields = ['created_at', 'updated_at']
     actions = ['mark_as_resolved', 'mark_as_closed']
-    
+
     fieldsets = (
         ('Enquiry Information', {
             'fields': ('name', 'email', 'phone', 'enquiry_type', 'subject', 'message')
@@ -39,12 +39,12 @@ class EnquiryAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def mark_as_resolved(self, request, queryset):
         updated = queryset.update(status='resolved')
         self.message_user(request, f'{updated} enquiry(ies) marked as resolved.')
     mark_as_resolved.short_description = "Mark selected enquiries as resolved"
-    
+
     def mark_as_closed(self, request, queryset):
         updated = queryset.update(status='closed')
         self.message_user(request, f'{updated} enquiry(ies) marked as closed.')
@@ -57,12 +57,12 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'title', 'comment']
     readonly_fields = ['created_at', 'updated_at']
     actions = ['approve_reviews', 'disapprove_reviews']
-    
+
     def approve_reviews(self, request, queryset):
         updated = queryset.update(is_approved=True)
         self.message_user(request, f'{updated} review(s) approved.')
     approve_reviews.short_description = "Approve selected reviews"
-    
+
     def disapprove_reviews(self, request, queryset):
         updated = queryset.update(is_approved=False)
         self.message_user(request, f'{updated} review(s) disapproved.')
@@ -74,7 +74,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ['is_donor', 'is_staff_member', 'city', 'state', 'created_at']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'phone', 'city']
     readonly_fields = ['created_at', 'updated_at']
-    
+
     fieldsets = (
         ('User Information', {
             'fields': ('user', 'phone', 'date_of_birth')
@@ -96,12 +96,12 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(BloodPurchase)
 class BloodPurchaseAdmin(admin.ModelAdmin):
-    list_display = ['user', 'blood_type', 'units_needed', 'urgency_level', 'status', 'total_amount', 'created_at']
+    list_display = ['user', 'blood_type', 'units_needed', 'urgency_level', 'status', 'get_total_amount', 'created_at']
     list_filter = ['blood_type', 'urgency_level', 'status', 'created_at']
     search_fields = ['user__username', 'hospital_name', 'patient_name', 'doctor_name']
-    readonly_fields = ['total_amount', 'created_at', 'updated_at']
+    readonly_fields = ['total_price', 'created_at', 'updated_at']
     actions = ['approve_purchases', 'complete_purchases', 'cancel_purchases']
-    
+
     fieldsets = (
         ('Purchase Information', {
             'fields': ('user', 'blood_type', 'units_needed', 'purpose')
@@ -110,7 +110,7 @@ class BloodPurchaseAdmin(admin.ModelAdmin):
             'fields': ('hospital_name', 'doctor_name', 'patient_name', 'urgency_level')
         }),
         ('Financial Information', {
-            'fields': ('price_per_unit', 'total_amount')
+            'fields': ('price_per_unit', 'total_price')
         }),
         ('Status Management', {
             'fields': ('status', 'admin_notes')
@@ -120,17 +120,21 @@ class BloodPurchaseAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
+    def get_total_amount(self, obj):
+        return obj.total_price
+    get_total_amount.short_description = 'Total Amount'
+
     def approve_purchases(self, request, queryset):
         updated = queryset.update(status='approved')
         self.message_user(request, f'{updated} purchase(s) approved.')
     approve_purchases.short_description = "Approve selected purchases"
-    
+
     def complete_purchases(self, request, queryset):
         updated = queryset.update(status='completed')
         self.message_user(request, f'{updated} purchase(s) completed.')
     complete_purchases.short_description = "Complete selected purchases"
-    
+
     def cancel_purchases(self, request, queryset):
         updated = queryset.update(status='cancelled')
         self.message_user(request, f'{updated} purchase(s) cancelled.')

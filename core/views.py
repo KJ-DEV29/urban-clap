@@ -163,6 +163,28 @@ def donate_blood(request):
         ("O-", "O-"),
     ]
     if request.method == 'POST':
+        try:
+            donor = Donor.objects.get(user=request.user)
+        except Donor.DoesNotExist:
+            # Create Donor from form data
+            full_name = request.POST.get('full_name', '').strip()
+            first_name = full_name.split()[0] if full_name else ''
+            last_name = ' '.join(full_name.split()[1:]) if len(full_name.split()) > 1 else ''
+            donor = Donor.objects.create(
+                user=request.user,
+                first_name=first_name,
+                last_name=last_name,
+                email=request.POST.get('email'),
+                phone_number=request.POST.get('phone'),
+                blood_type=request.POST.get('blood_group'),
+                date_of_birth=calculate_dob_from_age(int(request.POST.get('age'))),
+                gender=request.POST.get('gender')[0],  # 'M', 'F', or 'O'
+                address=request.POST.get('address'),
+                city='',  # Add if your form collects it
+                state='',
+                zip_code='',
+                last_donation_date=request.POST.get('last_donation') or None,
+            )
         blood_bank_id = request.POST.get('blood_bank')
         donation_date = request.POST.get('donation_date')
         donation_time = request.POST.get('donation_time')
@@ -170,13 +192,6 @@ def donate_blood(request):
         
         try:
             blood_bank = BloodBank.objects.get(id=blood_bank_id)
-            
-            # Check if user is a donor
-            try:
-                donor = Donor.objects.get(user=request.user)
-            except Donor.DoesNotExist:
-                messages.error(request, 'You need to register as a donor first.')
-                return redirect('donors:register')  # Assuming donor registration is in donors app
             
             # Create donation
             Donation.objects.create(
@@ -201,6 +216,11 @@ def donate_blood(request):
     }
     return render(request, 'core/donate_blood.html', context)
 
+def calculate_dob_from_age(age):
+    from datetime import date
+    today = date.today()
+    return date(today.year - age, today.month, today.day)
+
 @login_required
 def purchase_blood(request):
     """Purchase blood view"""
@@ -215,8 +235,8 @@ def purchase_blood(request):
         ("O-", "O-"),
     ]
     if request.method == 'POST':
-        blood_type = request.POST.get('blood_type')
-        units_needed = int(request.POST.get('units_needed'))
+        blood_type = request.POST.get('blood_group')  # <-- fix here
+        units_needed = int(request.POST.get('units', 0) or 0)
         purpose = request.POST.get('purpose')
         hospital_name = request.POST.get('hospital_name')
         doctor_name = request.POST.get('doctor_name', '')

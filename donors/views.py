@@ -25,7 +25,7 @@ def donor_list(request):
     
     context = {
         'donors': donors,
-        'blood_types': Donor.BLOOD_TYPES,
+        'blood_types': Donor.BLOOD_TYPES,   
     }
     return render(request, 'donors/donor_list.html', context)
 

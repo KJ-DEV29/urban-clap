@@ -111,7 +111,7 @@ class BloodPurchase(models.Model):
     ], default='normal')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     admin_notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -123,5 +123,5 @@ class BloodPurchase(models.Model):
         return f"{self.user.username} - {self.blood_type} ({self.units_needed} units)"
     
     def save(self, *args, **kwargs):
-        self.total_amount = self.units_needed * self.price_per_unit
+        self.total_price = self.units_needed * self.price_per_unit
         super().save(*args, **kwargs)
