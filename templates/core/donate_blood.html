@@ -176,10 +176,15 @@
         <div class="form-group">
             <label for="blood_group">Blood Group <span class="required">*</span></label>
             <select id="blood_group" name="blood_group" required>
-                <option value="" disabled selected>Select blood group</option>
-                {% for bg in blood_groups %}
-                <option value="{{ bg.0 }}" {% if request.POST.blood_group == bg.0 %}selected{% endif %}>{{ bg.1 }}</option>
-                {% endfor %}
+                <option value="" disabled {% if not request.POST.blood_group %}selected{% endif %}>Select blood group</option>
+                <option value="A+" {% if request.POST.blood_group == "A+" %}selected{% endif %}>A+</option>
+                <option value="A-" {% if request.POST.blood_group == "A-" %}selected{% endif %}>A-</option>
+                <option value="B+" {% if request.POST.blood_group == "B+" %}selected{% endif %}>B+</option>
+                <option value="B-" {% if request.POST.blood_group == "B-" %}selected{% endif %}>B-</option>
+                <option value="AB+" {% if request.POST.blood_group == "AB+" %}selected{% endif %}>AB+</option>
+                <option value="AB-" {% if request.POST.blood_group == "AB-" %}selected{% endif %}>AB-</option>
+                <option value="O+" {% if request.POST.blood_group == "O+" %}selected{% endif %}>O+</option>
+                <option value="O-" {% if request.POST.blood_group == "O-" %}selected{% endif %}>O-</option>
             </select>
             <div class="invalid-feedback">Please select your blood group.</div>
         </div>
