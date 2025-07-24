@@ -177,14 +177,17 @@
             <label for="blood_group">Blood Group <span class="required">*</span></label>
             <select id="blood_group" name="blood_group" required>
                 <option value="" disabled {% if not request.POST.blood_group %}selected{% endif %}>Select blood group</option>
-                <option value="A+" {% if request.POST.blood_group == "A+" %}selected{% endif %}>A+</option>
-                <option value="A-" {% if request.POST.blood_group == "A-" %}selected{% endif %}>A-</option>
-                <option value="B+" {% if request.POST.blood_group == "B+" %}selected{% endif %}>B+</option>
-                <option value="B-" {% if request.POST.blood_group == "B-" %}selected{% endif %}>B-</option>
-                <option value="AB+" {% if request.POST.blood_group == "AB+" %}selected{% endif %}>AB+</option>
-                <option value="AB-" {% if request.POST.blood_group == "AB-" %}selected{% endif %}>AB-</option>
-                <option value="O+" {% if request.POST.blood_group == "O+" %}selected{% endif %}>O+</option>
-                <option value="O-" {% if request.POST.blood_group == "O-" %}selected{% endif %}>O-</option>
+                {% if blood_groups %}
+                    {% for bg in blood_groups %}
+                        {% if bg.0 is not None and bg.1 is not None %}
+                            <option value="{{ bg.0 }}" {% if request.POST.blood_group == bg.0 %}selected{% endif %}>{{ bg.1 }}</option>
+                        {% else %}
+                            <option value="{{ bg }}" {% if request.POST.blood_group == bg %}selected{% endif %}>{{ bg }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <option value="" disabled>No blood groups available</option>
+                {% endif %}
             </select>
             <div class="invalid-feedback">Please select your blood group.</div>
         </div>
@@ -210,6 +213,16 @@
                 </div>
             </div>
             <div class="invalid-feedback">Please confirm your health status.</div>
+        </div>
+        <div class="form-group">
+            <label for="blood_bank">Blood Bank <span class="required">*</span></label>
+            <select name="blood_bank" required>
+                <option value="">Select blood bank</option>
+                {% for bank in blood_banks %}
+                    <option value="{{ bank.id }}" {% if request.POST.blood_bank == bank.id|stringformat:"s" %}selected{% endif %}>{{ bank.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">Please select a blood bank.</div>
         </div>
         <button type="submit" class="submit-btn">Submit Donation Request</button>
     </form>

@@ -152,6 +152,16 @@ def dashboard(request):
 @login_required
 def donate_blood(request):
     """Donate blood view"""
+    blood_groups = [
+        ("A+", "A+"),
+        ("A-", "A-"),
+        ("B+", "B+"),
+        ("B-", "B-"),
+        ("AB+", "AB+"),
+        ("AB-", "AB-"),
+        ("O+", "O+"),
+        ("O-", "O-"),
+    ]
     if request.method == 'POST':
         blood_bank_id = request.POST.get('blood_bank')
         donation_date = request.POST.get('donation_date')
@@ -187,12 +197,23 @@ def donate_blood(request):
     blood_banks = BloodBank.objects.filter(is_active=True)
     context = {
         'blood_banks': blood_banks,
+        "blood_groups": blood_groups,
     }
     return render(request, 'core/donate_blood.html', context)
 
 @login_required
 def purchase_blood(request):
     """Purchase blood view"""
+    blood_groups = [
+        ("A+", "A+"),
+        ("A-", "A-"),
+        ("B+", "B+"),
+        ("B-", "B-"),
+        ("AB+", "AB+"),
+        ("AB-", "AB-"),
+        ("O+", "O+"),
+        ("O-", "O-"),
+    ]
     if request.method == 'POST':
         blood_type = request.POST.get('blood_type')
         units_needed = int(request.POST.get('units_needed'))
@@ -229,7 +250,10 @@ def purchase_blood(request):
         messages.success(request, f'Blood purchase request submitted successfully! Total cost: ${total_price:.2f}')
         return redirect('core:dashboard')
     
-    return render(request, 'core/purchase_blood.html')
+    context = {
+        "blood_groups": blood_groups,
+    }
+    return render(request, 'core/purchase_blood.html', context)
 
 @staff_member_required
 def admin_dashboard(request):

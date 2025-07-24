@@ -82,7 +82,7 @@ def donor_delete(request, donor_id):
         donor_name = donor.full_name
         donor.delete()
         messages.success(request, f'Donor {donor_name} deleted successfully!')
-        return redirect('donors:donor_list')
+        return redirect('donors:register')  # or any valid URL name
     
     context = {
         'donor': donor,
@@ -107,3 +107,7 @@ def donor_search(request):
         'query': query,
     }
     return render(request, 'donors/donor_search.html', context)
+
+def register(request):
+    # You can add your registration logic here
+    return render(request, 'donors/register.html')
