@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% block title %}Donate Blood | Blood Bank{% endblock %}
+
+{% block content %}
+<style>
+.donate-container {
+    max-width: 600px;
+    margin: 40px auto 0 auto;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 32px 24px 24px 24px;
+}
+.donate-title {
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+.donate-desc {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #444;
+}
+.donate-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.donate-form input[type="text"],
+.donate-form input[type="email"],
+.donate-form input[type="tel"],
+.donate-form input[type="number"],
+.donate-form input[type="date"],
+.donate-form select,
+.donate-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    background: transparent;
+    color: white;
+    transition: border 0.2s;
+}
+
+.donate-form select{
+    color: #999  ;
+}
+.donate-form textarea {
+    resize: vertical;
+}
+.donate-form input:focus,
+.donate-form select:focus,
+.donate-form textarea:focus {
+    border-color: #d32f2f;
+    outline: none;
+}
+.donate-form .required {
+    color: #d32f2f;
+}
+.donate-form .form-group {
+    margin-bottom: 18px;
+}
+.donate-form .radio-group {
+    display: flex;
+    gap: 24px;
+    margin-top: 6px;
+}
+.donate-form .radio-group label {
+    font-weight: 400;
+    margin-left: 4px;
+}
+.donate-form .invalid-feedback {
+    color: #d32f2f;
+    font-size: 0.95em;
+    display: none;
+    margin-top: 2px;
+}
+.donate-form input:invalid + .invalid-feedback,
+.donate-form select:invalid + .invalid-feedback,
+.donate-form textarea:invalid + .invalid-feedback {
+    display: block;
+}
+.donate-form .submit-btn {
+    width: 100%;
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+.donate-form .submit-btn:hover {
+    background: #b71c1c;
+}
+.donate-messages {
+    margin-top: 24px;
+}
+.donate-messages .alert {
+    padding: 10px 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+.alert-success { background: #e6f4ea; color: #256029; border: 1px solid #b7e1cd; }
+.alert-error, .alert-danger { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
+.donate-info-card {
+    background: #222;
+    border-radius: 8px;
+    margin-top: 28px;
+    padding: 18px 20px;
+    border: 1px solid #333;
+}
+.donate-info-card h6 {
+    color: #d32f2f;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.donate-info-card ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #444;
+    font-size: 0.98rem;
+}
+@media (max-width: 700px) {
+    .donate-container { padding: 18px 6px 18px 6px; }
+}
+</style>
+<div class="donate-container">
+    <h2 class="donate-title">Donate Blood</h2>
+    <p class="donate-desc">Your donation can save lives. Please fill out the form below to register as a blood donor.</p>
+    <form method="post" class="donate-form" id="donateForm" autocomplete="off" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="full_name">Full Name <span class="required">*</span></label>
+            <input type="text" id="full_name" name="full_name" required value="{{ request.POST.full_name|default:user.get_full_name }}">
+            <div class="invalid-feedback">Please enter your name.</div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required value="{{ request.POST.email|default:user.email }}">
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required value="{{ request.POST.phone|default:user.profile.phone }}">
+            <div class="invalid-feedback">Please enter your phone number.</div>
+        </div>
+        <div class="form-group">
+            <label for="age">Age <span class="required">*</span></label>
+            <input type="number" id="age" name="age" min="16" max="70" required value="{{ request.POST.age }}">
+            <div class="invalid-feedback">Please enter your age (16-70).</div>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender <span class="required">*</span></label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="Male" {% if request.POST.gender == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if request.POST.gender == "Female" %}selected{% endif %}>Female</option>
+                <option value="Other" {% if request.POST.gender == "Other" %}selected{% endif %}>Other</option>
+            </select>
+            <div class="invalid-feedback">Please select your gender.</div>
+        </div>
+        <div class="form-group">
+            <label for="blood_group">Blood Group <span class="required">*</span></label>
+            <select id="blood_group" name="blood_group" required>
+                <option value="" disabled selected>Select blood group</option>
+                {% for bg in blood_groups %}
+                <option value="{{ bg.0 }}" {% if request.POST.blood_group == bg.0 %}selected{% endif %}>{{ bg.1 }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">Please select your blood group.</div>
+        </div>
+        <div class="form-group">
+            <label for="address">Address <span class="required">*</span></label>
+            <textarea id="address" name="address" rows="2" required>{{ request.POST.address }}</textarea>
+            <div class="invalid-feedback">Please enter your address.</div>
+        </div>
+        <div class="form-group">
+            <label for="last_donation">Last Donation Date (if any)</label>
+            <input type="date" id="last_donation" name="last_donation" value="{{ request.POST.last_donation }}">
+        </div>
+        <div class="form-group">
+            <label>Are you currently healthy and not taking any medication? <span class="required">*</span></label>
+            <div class="radio-group">
+                <div>
+                    <input type="radio" name="healthy" id="healthy_yes" value="Yes" required {% if request.POST.healthy == "Yes" %}checked{% endif %}>
+                    <label for="healthy_yes">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" name="healthy" id="healthy_no" value="No" required {% if request.POST.healthy == "No" %}checked{% endif %}>
+                    <label for="healthy_no">No</label>
+                </div>
+            </div>
+            <div class="invalid-feedback">Please confirm your health status.</div>
+        </div>
+        <button type="submit" class="submit-btn">Submit Donation Request</button>
+    </form>
+    {% if messages %}
+        <div class="donate-messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="donate-info-card">
+        <h6><i class="fas fa-info-circle"></i>Important Information</h6>
+        <ul>
+            <li>You must be at least 16 years old and weigh at least 50kg (110 lbs).</li>
+            <li>Bring a valid ID proof on the day of donation.</li>
+            <li>Do not donate if you are unwell, recently traveled to malaria-prone areas, or have had a recent tattoo/piercing.</li>
+            <li>Eat a healthy meal and drink plenty of water before donating.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+// Simple JS validation (no Bootstrap)
+document.getElementById('donateForm').addEventListener('submit', function(event) {
+    var form = this;
+    var valid = true;
+    // Validate required fields
+    form.querySelectorAll('[required]').forEach(function(input) {
+        if ((input.type === "radio" || input.type === "checkbox")) {
+            var radios = form.querySelectorAll('input[name="' + input.name + '"]');
+            var checked = Array.prototype.slice.call(radios).some(function(r) { return r.checked; });
+            if (!checked) {
+                valid = false;
+                radios[0].parentElement.parentElement.nextElementSibling.style.display = "block";
+            } else {
+                radios[0].parentElement.parentElement.nextElementSibling.style.display = "none";
+            }
+        } else if (!input.value) {
+            valid = false;
+            input.classList.add('invalid');
+            if (input.nextElementSibling && input.nextElementSibling.classList.contains('invalid-feedback')) {
+                input.nextElementSibling.style.display = "block";
+            }
+        } else {
+            input.classList.remove('invalid');
+            if (input.nextElementSibling && input.nextElementSibling.classList.contains('invalid-feedback')) {
+                input.nextElementSibling.style.display = "none";
+            }
+        }
+    });
+    if (!valid) {
+        event.preventDefault();
+    }
+});
+</script>
+{% endblock %}
+
+<!-- 
+Backend Integration Note:
+
+- This template expects a Django view to handle GET (render form) and POST (process donation) requests.
+- The view should:
+    - Check user authentication (login required).
+    - On POST, validate form data, create a donation record, and show success/error messages.
+    - Pass Django messages to the template for feedback.
+    - Pass a context variable 'blood_groups' as a list of tuples (value, label) for the blood group dropdown.
+    - Optionally, pre-fill user info if available.
+
+If you do not have a backend for this, you need to:

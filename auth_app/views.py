@@ -36,7 +36,7 @@ def user_logout(request):
     """User logout view"""
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('home')
+    return redirect('/')
 
 def user_register(request):
     """User registration view"""

@@ -43,7 +43,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'core:dashboard' %}" {% if request.resolver_match.url_name == "dashboard" %}class="active"{% endif %}>Dashboard <br>Dashboard</a></li>
                 <li><a href="{% url 'core:donate_blood' %}" {% if request.resolver_match.url_name == "donate_blood" %}class="active"{% endif %}>Donate Blood <br>Donate Blood</a></li>
-                <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == "purchase_blood" %}class="active"{% endif %}>Purchase Blood <br>Purchase Blood   </a></li>
+                <li><a href="{% url 'core:purchase_blood' %}" {% if request.resolver_match.url_name == "purchase_blood" %}class="active"{% endif %}>Purchase Blood <br>Purchase Blood</a></li>
                 {% if user.is_staff %}
                     <li><a href="{% url 'core:admin_dashboard' %}" {% if request.resolver_match.url_name == "admin_dashboard" %}class="active"{% endif %}>Admin Dashboard</a></li>
                     <li><a href="{% url 'core:admin_enquiries' %}" {% if request.resolver_match.url_name == "admin_enquiries" %}class="active"{% endif %}>Admin Enquiries</a></li>

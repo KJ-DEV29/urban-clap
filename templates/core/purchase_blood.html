@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% block title %}Purchase Blood | Blood Bank{% endblock %}
+
+{% block content %}
+<style>
+.purchase-container {
+    max-width: 600px;
+    margin: 40px auto 0 auto;
+    background: #1a1a1a;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 32px 24px 24px 24px;
+}
+.purchase-title {
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+.purchase-desc {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #444;
+}
+.purchase-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.purchase-form input[type="text"],
+.purchase-form input[type="email"],
+.purchase-form input[type="tel"],
+.purchase-form input[type="number"],
+.purchase-form input[type="date"],
+.purchase-form select,
+.purchase-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    background: transparent;
+    color: white;
+    transition: border 0.2s;
+}
+.purchase-form select {
+    color: #999;
+}
+.purchase-form textarea {
+    resize: vertical;
+}
+.purchase-form input:focus,
+.purchase-form select:focus,
+.purchase-form textarea:focus {
+    border-color: #d32f2f;
+    outline: none;
+}
+.purchase-form .required {
+    color: #d32f2f;
+}
+.purchase-form .form-group {
+    margin-bottom: 18px;
+}
+.purchase-form .invalid-feedback {
+    color: #d32f2f;
+    font-size: 0.95em;
+    display: none;
+    margin-top: 2px;
+}
+.purchase-form input:invalid + .invalid-feedback,
+.purchase-form select:invalid + .invalid-feedback,
+.purchase-form textarea:invalid + .invalid-feedback {
+    display: block;
+}
+.purchase-form .submit-btn {
+    width: 100%;
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+.purchase-form .submit-btn:hover {
+    background: #b71c1c;
+}
+.purchase-messages {
+    margin-top: 24px;
+}
+.purchase-messages .alert {
+    padding: 10px 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+.alert-success { background: #e6f4ea; color: #256029; border: 1px solid #b7e1cd; }
+.alert-error, .alert-danger { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb; }
+.purchase-info-card {
+    background: #222;
+    border-radius: 8px;
+    margin-top: 28px;
+    padding: 18px 20px;
+    border: 1px solid #333;
+}
+.purchase-info-card h6 {
+    color: #d32f2f;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.purchase-info-card ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #444;
+    font-size: 0.98rem;
+}
+@media (max-width: 700px) {
+    .purchase-container { padding: 18px 6px 18px 6px; }
+}
+</style>
+<div class="purchase-container">
+    <h2 class="purchase-title">Purchase Blood</h2>
+    <p class="purchase-desc">Need blood for yourself or a loved one? Fill out the form below to request a blood unit. Our team will contact you for confirmation and further steps.</p>
+    <form method="post" class="purchase-form" id="purchaseForm" autocomplete="off" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="full_name">Full Name <span class="required">*</span></label>
+            <input type="text" id="full_name" name="full_name" required value="{{ request.POST.full_name|default:user.get_full_name }}">
+            <div class="invalid-feedback">Please enter your name.</div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required value="{{ request.POST.email|default:user.email }}">
+            <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required value="{{ request.POST.phone|default:user.profile.phone }}">
+            <div class="invalid-feedback">Please enter your phone number.</div>
+        </div>
+        <div class="form-group">
+            <label for="blood_group">Blood Group <span class="required">*</span></label>
+            <select id="blood_group" name="blood_group" required>
+                <option value="" disabled selected>Select blood group</option>
+                {% for value, label in blood_groups %}
+                    <option value="{{ value }}" {% if request.POST.blood_group == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">Please select a blood group.</div>
+        </div>
+        <div class="form-group">
+            <label for="units">Units Required <span class="required">*</span></label>
+            <input type="number" id="units" name="units" min="1" max="10" required value="{{ request.POST.units }}">
+            <div class="invalid-feedback">Please enter the number of units (1-10).</div>
+        </div>
+        <div class="form-group">
+            <label for="required_date">Required Date <span class="required">*</span></label>
+            <input type="date" id="required_date" name="required_date" required value="{{ request.POST.required_date }}">
+            <div class="invalid-feedback">Please select the required date.</div>
+        </div>
+        <div class="form-group">
+            <label for="hospital">Hospital / Clinic Name <span class="required">*</span></label>
+            <input type="text" id="hospital" name="hospital" required value="{{ request.POST.hospital }}">
+            <div class="invalid-feedback">Please enter the hospital or clinic name.</div>
+        </div>
+        <div class="form-group">
+            <label for="patient_name">Patient Name <span class="required">*</span></label>
+            <input type="text" id="patient_name" name="patient_name" required value="{{ request.POST.patient_name }}">
+            <div class="invalid-feedback">Please enter the patient's name.</div>
+        </div>
+        <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" name="notes" rows="3">{{ request.POST.notes }}</textarea>
+        </div>
+        <button type="submit" class="submit-btn">Request Blood</button>
+    </form>
+    <div class="purchase-messages">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="purchase-info-card">
+        <h6><i class="ri-information-line"></i> Important Information</h6>
+        <ul>
+            <li>Blood requests are subject to availability and verification.</li>
+            <li>Our staff will contact you to confirm your request and provide further instructions.</li>
+            <li>Please bring a valid ID and doctor's prescription when collecting blood.</li>
+            <li>For urgent requests, call our helpline after submitting the form.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+// Simple JS validation (no Bootstrap)
+document.getElementById('purchaseForm').addEventListener('submit', function(event) {
+    var form = this;
+    var valid = true;
+    // Validate required fields
+    form.querySelectorAll('[required]').forEach(function(input) {
+        if (!input.value) {
+            valid = false;
+            input.classList.add('invalid');
+            if (input.nextElementSibling && input.nextElementSibling.classList.contains('invalid-feedback')) {
+                input.nextElementSibling.style.display = "block";
+            }
+        } else {
+            input.classList.remove('invalid');
+            if (input.nextElementSibling && input.nextElementSibling.classList.contains('invalid-feedback')) {
+                input.nextElementSibling.style.display = "none";
+            }
+        }
+    });
+    if (!valid) {
+        event.preventDefault();
+    }
+});
+</script>
+{% endblock %}
+
+<!-- 
+Backend Integration Note:
+
+- This template expects a Django view to handle GET (render form) and POST (process purchase) requests.
+- The view should:
+    - Check user authentication (login required).
+    - On POST, validate form data, check blood unit availability, create a purchase record, and show success/error messages.
+    - Pass Django messages to the template for feedback.
+    - Pass a context variable 'blood_groups' as a list of tuples (value, label) for the blood group dropdown.
+    - Optionally, pre-fill user info if available.
+
+If you do not have a backend for this, you need to:
+    - Create a Django view for purchase_blood.
+    - Add URL mapping.
+    - Create a model for blood purchase requests.
+    - Handle form validation and messages.
+-->
